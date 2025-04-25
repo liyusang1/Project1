@@ -1,6 +1,6 @@
 package controller;
 
-import model.SampleGift;
+import model.dto.SampleGiftDto;
 import service.SampleGiftService;
 
 import java.util.List;
@@ -25,8 +25,8 @@ public class SampleGiftController {
     }
 
     // 상품 생성 처리
-    public void insertGift(SampleGift sampleGift) {
-        int result = sampleGiftService.insertGift(sampleGift);
+    public void insertGift(SampleGiftDto sampleGiftDto) {
+        int result = sampleGiftService.insertGift(sampleGiftDto);
         if (result == 1) {
             System.out.println("🎉 상품이 성공적으로 등록되었습니다!");
         } else if (result == 0) {
@@ -38,7 +38,7 @@ public class SampleGiftController {
 
     // 전체 상품 조회
     public void getAllGift() {
-        List<SampleGift> giftList = sampleGiftService.getAllGifts();
+        List<SampleGiftDto> giftList = sampleGiftService.getAllGifts();
         giftList.forEach(g -> System.out.printf("%d %s %d %d\n",
                 g.getGno(), g.getName(), g.getG_start(), g.getG_end()));
     }

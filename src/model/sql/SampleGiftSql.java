@@ -1,4 +1,4 @@
-package sql;
+package model.sql;
 
 public class SampleGiftSql {
     public static final String INSERT = "INSERT INTO gift VALUES (?, ?, ?, ?)";

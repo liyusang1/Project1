@@ -1,7 +1,7 @@
 package view;
 
 import controller.SampleGiftController;
-import model.SampleGift;
+import model.dto.SampleGiftDto;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,8 +16,8 @@ public class Main {
         controller.updateGift("엄마는외계인", 6666, 6666, 1);
 
         // 상품 생성
-        SampleGift sampleGift = new SampleGift(44, "레인보우샤베트", 652, 442);
-        controller.insertGift(sampleGift);
+        SampleGiftDto sampleGiftDto = new SampleGiftDto(44, "레인보우샤베트", 652, 442);
+        controller.insertGift(sampleGiftDto);
 
         //상품조회
         controller.getAllGift();

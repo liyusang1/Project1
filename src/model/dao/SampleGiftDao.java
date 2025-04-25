@@ -1,7 +1,7 @@
-package dao;
+package model.dao;
 
-import model.SampleGift;
-import sql.SampleGiftSql;
+import model.dto.SampleGiftDto;
+import model.sql.SampleGiftSql;
 import util.DBUtil;
 
 import java.sql.Connection;
@@ -22,28 +22,28 @@ public class SampleGiftDao {
     try 블록이 끝나면 자동으로 close()가 호출된다.
     */
 
-    public List<SampleGift> getAllGifts() {
+    public List<SampleGiftDto> getAllGifts() {
         String sql = SampleGiftSql.SELECT_ALL;
-        List<SampleGift> sampleGifts = new ArrayList<>();
+        List<SampleGiftDto> sampleGiftDtos = new ArrayList<>();
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
-                SampleGift sampleGift = new SampleGift();
-                sampleGift.setGno(resultSet.getInt("gno"));
-                sampleGift.setName(resultSet.getString("gname"));
-                sampleGift.setG_start(resultSet.getInt("g_start"));
-                sampleGift.setG_end(resultSet.getInt("g_end"));
-                sampleGifts.add(sampleGift);
+                SampleGiftDto sampleGiftDto = new SampleGiftDto();
+                sampleGiftDto.setGno(resultSet.getInt("gno"));
+                sampleGiftDto.setName(resultSet.getString("gname"));
+                sampleGiftDto.setG_start(resultSet.getInt("g_start"));
+                sampleGiftDto.setG_end(resultSet.getInt("g_end"));
+                sampleGiftDtos.add(sampleGiftDto);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return sampleGifts;
+        return sampleGiftDtos;
     }
 
     public int updateGift(String updateName, int updateGStart, int updateGEnd, int Gno) {
@@ -66,16 +66,16 @@ public class SampleGiftDao {
         }
     }
 
-    public int insertGift(SampleGift sampleGift) {
+    public int insertGift(SampleGiftDto sampleGiftDto) {
         String sql = SampleGiftSql.INSERT;
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setInt(1, sampleGift.getGno());
-            preparedStatement.setString(2, sampleGift.getName());
-            preparedStatement.setInt(3, sampleGift.getG_start());
-            preparedStatement.setInt(4, sampleGift.getG_end());
+            preparedStatement.setInt(1, sampleGiftDto.getGno());
+            preparedStatement.setString(2, sampleGiftDto.getName());
+            preparedStatement.setInt(3, sampleGiftDto.getG_start());
+            preparedStatement.setInt(4, sampleGiftDto.getG_end());
 
             //영향을 받은 행의 갯수를 출력하게 된다.
             return preparedStatement.executeUpdate();

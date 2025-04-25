@@ -1,15 +1,15 @@
-package model;
+package model.dto;
 
-public class SampleGift {
+public class SampleGiftDto {
     private int gno;
     private String name;
     private int g_start;
     private int g_end;
 
-    public SampleGift() {
+    public SampleGiftDto() {
     }
 
-    public SampleGift(int gno, String name, int g_start, int g_end) {
+    public SampleGiftDto(int gno, String name, int g_start, int g_end) {
         this.gno = gno;
         this.name = name;
         this.g_start = g_start;

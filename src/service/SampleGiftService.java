@@ -1,7 +1,7 @@
 package service;
 
-import dao.SampleGiftDao;
-import model.SampleGift;
+import model.dao.SampleGiftDao;
+import model.dto.SampleGiftDto;
 
 import java.util.List;
 
@@ -29,17 +29,17 @@ public class SampleGiftService {
     /**
      * 상품 생성을 처리
      *
-     * @param sampleGift 상품 이름
+     * @param sampleGiftDto 상품 이름
      */
-    public int insertGift(SampleGift sampleGift) {
+    public int insertGift(SampleGiftDto sampleGiftDto) {
         // 비즈니스 로직을 이곳에서 추가할 수 있습니다.
         // 예: 유효성 검사, 값 체크 등
-        if (sampleGift.getName() == null || sampleGift.getName().isBlank()) {
+        if (sampleGiftDto.getName() == null || sampleGiftDto.getName().isBlank()) {
             System.out.println("❌ 상품 이름이 비어있습니다.");
             return 0;
         }
 
-        return sampleGiftDao.insertGift(sampleGift);
+        return sampleGiftDao.insertGift(sampleGiftDto);
     }
 
     /**
@@ -47,7 +47,7 @@ public class SampleGiftService {
      *
      * @param
      */
-    public List<SampleGift> getAllGifts() {
+    public List<SampleGiftDto> getAllGifts() {
         // 비즈니스 로직을 이곳에서 추가할 수 있습니다.
         // 예: 유효성 검사, 값 체크 등
         return sampleGiftDao.getAllGifts();
