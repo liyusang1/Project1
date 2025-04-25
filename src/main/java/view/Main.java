@@ -13,11 +13,11 @@ public class Main {
         SampleGiftController controller = new SampleGiftController();
 
         // 상품 업데이트
-        controller.updateGift("엄마는외계인", 6666, 6666, 1);
+        //controller.updateGift("엄마는외계인", 6666, 6666, 1);
 
         // 상품 생성
         SampleGiftDto sampleGiftDto = new SampleGiftDto(44, "레인보우샤베트", 652, 442);
-        controller.insertGift(sampleGiftDto);
+        //controller.insertGift(sampleGiftDto);
 
         //상품조회
         controller.getAllGift();

@@ -30,3 +30,15 @@ bin/
 
 ##secret keys
 .env
+
+# Gradle
+/build
+/.gradle
+
+# IntelliJ
+/out
+.idea/
+*.iml
+
+# Java class files
+*.class
