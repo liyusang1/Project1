@@ -2,28 +2,28 @@ package model.dto;
 
 import lombok.Data;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 public class RequestsDto {
-    private int request_id;
-    private int user_id;
-    private String request_book;
-    private String request_author;
-    private String request_publisher;
-    private Date create_at;
+    private Long requestId;
+    private Long userId;
+    private String requestBook;
+    private String requestAuthor;
+    private String requestPublisher;
+    private Date createAt;
     private int status;
 
     public RequestsDto() {}
-    public RequestsDto(int request_id, int user_id, String request_book,
-                       String request_author, String request_publisher,
-                       Date create_at, int status) {
-        this.request_id = request_id;
-        this.user_id = user_id;
-        this.request_book = request_book;
-        this.request_author = request_author;
-        this.request_publisher = request_publisher;
-        this.create_at = create_at;
+    public RequestsDto(Long requestId, Long userId, String requestBook,
+                       String requestAuthor, String requestPublisher,
+                       Date createAt, int status) {
+        this.requestId = requestId;
+        this.userId = userId;
+        this.requestBook = requestBook;
+        this.requestAuthor = requestAuthor;
+        this.requestPublisher = requestPublisher;
+        this.createAt = createAt;
         this.status = status;
     }
 }
