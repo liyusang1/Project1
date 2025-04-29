@@ -44,7 +44,11 @@ public class LendingBookService {
             return 0;
         }
 
-        //TODO : 연체로인한 벌금 지불 대상자인지 체크 -> 연체로 인해 발생한 벌금을 납부하지않았다면 도서 시스템 이용 불가
+        //연체로인한 벌금 지불 대상자인지 체크 -> 연체로 인해 발생한 벌금을 납부하지않았다면 도서 시스템 이용 불가
+        if(!lendingBookDao.checkUsersLateFee(userId)) {
+            System.out.println("⚠️ 해당 유저는 연체로 인한 벌금을 납부하지 않았으므로 대출이 불가능 합니다.");
+            return 0;
+        }
 
         return lendingBookDao.insertLending(bookId, userId, dueDate);
     }
