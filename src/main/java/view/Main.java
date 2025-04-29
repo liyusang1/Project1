@@ -1,7 +1,9 @@
 package view;
 
+import controller.LendingBookController;
 import controller.SampleGiftController;
 import model.dto.SampleGiftDto;
+import util.DateConverter;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,6 +22,11 @@ public class Main {
         //controller.insertGift(sampleGiftDto);
 
         //상품조회
-        controller.getAllGift();
+        //controller.getAllGift();
+
+        //대출하기
+        LendingBookController lendingBookController = new LendingBookController();
+        lendingBookController.insertLending(2L, 1L, DateConverter.parseToLocalDateTime("2025.04.29"));
+
     }
 }
