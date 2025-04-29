@@ -38,7 +38,13 @@ public class LendingBookService {
             return 0;
         }
 
-        //TODO 대출중인지 if문으로 분기처리해야함
+        //현재 대출 중인지 체크
+        if(!lendingBookDao.checkUserLendingExist(userId)) {
+            System.out.println("⚠️ 해당 유저는 현재 대출 중 입니다.");
+            return 0;
+        }
+
+        //TODO : 연체로인한 벌금 지불 대상자인지 체크 -> 연체로 인해 발생한 벌금을 납부하지않았다면 도서 시스템 이용 불가
 
         return lendingBookDao.insertLending(bookId, userId, dueDate);
     }
