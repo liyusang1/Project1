@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class LendingDto {
-    private int lending_id;
+    private Long lending_id;
     private int book_id;
     private int user_id;
     private LocalDateTime created_at;
@@ -17,7 +17,8 @@ public class LendingDto {
     public LendingDto() {
     }
 
-    public LendingDto(int book_id, int user_id, LocalDateTime created_at, LocalDateTime due_date, LocalDateTime return_date, int status) {
+    public LendingDto(Long lending_id, int book_id, int user_id, LocalDateTime created_at, LocalDateTime due_date, LocalDateTime return_date, int status) {
+        this.lending_id = lending_id;
         this.book_id = book_id;
         this.user_id = user_id;
         this.created_at = created_at;
