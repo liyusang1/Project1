@@ -77,6 +77,7 @@ public class UserService {
     // 비밀번호 변경
     public boolean resetPassword(PasswordUpdateDto dto) {
         if (!userDao.verifyUserByEmailAndPhone(dto.getEmail(), dto.getPhoneNumber())) {
+
             System.out.println("⚠️ 이메일이나 전화번호가 일치하지 않습니다.");
             return false;
         }

@@ -37,6 +37,7 @@ public class UserController {
             SessionStorage.setSession(user);
 
             System.out.println("🎉 로그인 성공! " + user.getName() + "님 환영합니다.");
+
         } else {
             System.out.println("❌ 로그인 실패: 이메일 또는 비밀번호를 확인하세요.");
         }
@@ -51,6 +52,7 @@ public class UserController {
     // 비밀번호 변경
     public void resetPassword(PasswordUpdateDto dto) {
         boolean success = userService.resetPassword(dto);
+
         if (success) {
             System.out.println("🔐 비밀번호가 성공적으로 변경되었습니다.");
         } else {
