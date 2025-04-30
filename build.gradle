@@ -25,5 +25,12 @@ dependencies {
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // connection pool
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+
+    // Logback Classic 추가
+    implementation 'org.slf4j:slf4j-api:1.7.30'         // SLF4J API
+    implementation 'org.slf4j:slf4j-simple:1.7.30'      // SLF4J Simple (로깅을 하지 않음)
 }
 
