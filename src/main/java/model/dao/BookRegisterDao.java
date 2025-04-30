@@ -3,6 +3,7 @@ package model.dao;
 import model.dto.BookDto;
 import model.sql.BookRegisterSql;
 import util.DBUtil;
+import util.MapResultSetToDto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class BookRegisterDao {
 
@@ -59,7 +61,7 @@ public class BookRegisterDao {
         return available;
     }
 
-    // select
+    // 모든 책 출력
     public List<BookDto> getAllBooks() {
         String sql = BookRegisterSql.SELECT_ALL_BOOKS;
         List<BookDto> bookList = new ArrayList<>();
@@ -69,18 +71,27 @@ public class BookRegisterDao {
              ResultSet rs = preparedStatement.executeQuery()) {
 
             while (rs.next()) {
-                BookDto bookDto = new BookDto();
+                bookList.add(MapResultSetToDto.mapResultSetToBookDto(rs));
+            }
 
-                bookDto.setBookId(rs.getLong("book_id"));
-                bookDto.setTitle(rs.getString("title"));
-                bookDto.setAuthor(rs.getString("author"));
-                bookDto.setCategoryId(rs.getLong("category_id"));
-                bookDto.setPublisher(rs.getString("publisher"));
-                bookDto.setPrice(rs.getInt("price"));
-                bookDto.setStatus(rs.getInt("status"));
-                bookDto.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-                bookList.add(bookDto);
+        return bookList;
+    }
+
+    //     대출가능한 status 도서만 조회
+    public List<BookDto> getAvailableBooks() {
+        String sql = BookRegisterSql.SELECT_AVAILABLE_BOOKS;
+        List<BookDto> bookList = new ArrayList<>();
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet rs = preparedStatement.executeQuery()) {
+
+            while (rs.next()) {
+                bookList.add(MapResultSetToDto.mapResultSetToBookDto(rs));
             }
 
         } catch (SQLException e) {

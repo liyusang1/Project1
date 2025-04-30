@@ -8,6 +8,8 @@ public class BookRegisterSql {
 
     public static final String SELECT_ALL_BOOKS = "SELECT * FROM Books";
 
+    public static final String SELECT_AVAILABLE_BOOKS = "SELECT * FROM Books WHERE status = 1";
+
     public static final String CHECKBOOK = "SELECT COUNT(1) AS check_book FROM Books WHERE book_id = ?";
 
     public static final String CARTEGORY_SELECTALL = "SELECT * FROM Categorys";

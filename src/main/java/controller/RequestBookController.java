@@ -1,6 +1,7 @@
 package controller;
 
 import model.dto.BookDto;
+
 import model.dto.RequestsDto;
 import model.dto.SampleGiftDto;
 import service.RequestBookService;
@@ -20,14 +21,17 @@ public class RequestBookController {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("신청할 도서명을 입력해주세요. ");
+
         String title = sc.nextLine();
         System.out.print("신청할 도서 저자명을 입력해주세요. ");
         String author = sc.nextLine();
         System.out.print("신청할 도서 출판사를 입력해주세요. ");
         String publisher = sc.nextLine();
 
+
         requestBookService.requestBook(title, author, publisher);
     }
+
 
     // 희망도서 신청 조회(회원)
     public void getMyRequestedBooks() {
