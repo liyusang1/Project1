@@ -185,4 +185,39 @@ public class LendingBookDao {
         }
         return -1L;
     }
+
+    public int isPenaltyRequired(Long lendingId) {
+        String sql = LendingBookSql.CHECK_PENALTY_REQUIRED;
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setLong(1, lendingId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("days_overdue");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public int applyPenalty(Long lendingId, int penaltyRequired) {
+        String sql = LendingBookSql.APPLY_PENALTY;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setLong(1, lendingId);
+            preparedStatement.setInt(2, penaltyRequired * LendingStatus.LATE_FEE);
+
+            //영향을 받은 행의 갯수를 출력하게 된다.
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

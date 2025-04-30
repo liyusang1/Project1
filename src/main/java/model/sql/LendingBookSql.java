@@ -26,4 +26,12 @@ public class LendingBookSql {
     public static final String GET_BOOK_ID_FROM_LENDING_ID =
             "select book_id from Lendings where lending_id = ?";
 
+    public static final String CHECK_PENALTY_REQUIRED =
+            "SELECT DATEDIFF(NOW(), due_date) AS days_overdue\n" +
+                    "FROM Lendings\n" +
+                    "WHERE lending_id = ?";
+
+    public static final String APPLY_PENALTY =
+            "insert into LateFees(user_id, fee) value (?,?);";
+
 }

@@ -59,7 +59,7 @@ public class LendingBookService {
 
         //현재 대출 중인지 체크
         if (!lendingBookDao.checkUserLendingExist(userId)) {
-            System.out.println("⚠️ 해당 유저는 현재 대출 중 입니다. 책은 최대 3권까지 대출할 수 있습니다.");
+            System.out.println("⚠️ 해당 유저는 현재 대출 중 입니다. 책은 최대 4권까지 대출할 수 있습니다.");
             return 0;
         }
 
@@ -118,6 +118,14 @@ public class LendingBookService {
 
         //대여 상태를 대출가능 상태로 변경
         lendingBookDao.updateBookStatus(bookId, LendingStatus.IS_RETURNED);
+
+        //도서 연체로 인해 벌금을 부과해야 하는지
+        int penaltyRequired = lendingBookDao.isPenaltyRequired(lendingId);
+        if (penaltyRequired > 1) {
+            lendingBookDao.applyPenalty(userId,penaltyRequired);
+            System.out.println("⚠️ 연체로 인해 벌금이 부과됩니다. 벌금을 납부하기 전까지 대여를 하실 수 없습니다.");
+        }
+
         return lendingBookDao.returnBooks(lendingId);
     }
 
