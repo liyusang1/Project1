@@ -10,7 +10,7 @@ public class UserDto {
     private String name;
     private String email;
     private String phoneNumber;
-    private String membershipType; //0:일반유저 , 1:관리자
+    private int membershipType; //0:일반유저 , 1:관리자
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String password;
@@ -18,7 +18,7 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(Long userId, String name, String email, String phoneNumber, String membershipType, LocalDateTime createdAt, LocalDateTime updatedAt, String password) {
+    public UserDto(Long userId, String name, String email, String phoneNumber, int membershipType, LocalDateTime createdAt, LocalDateTime updatedAt, String password) {
         this.userId = userId;
         this.name = name;
         this.email = email;

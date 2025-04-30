@@ -1,5 +1,6 @@
 package model.dao;
 
+import model.dto.UserDto;
 import model.dto.UserLoginDto;
 import model.dto.UserSignUpDto;
 import model.sql.UserSql;
@@ -99,6 +100,33 @@ public class UserDao {
             e.printStackTrace();
             return false;
         }
+    }
+
+    // 로그인 후 사용자 정보 조회
+    public UserDto getUserByEmail(String email) {
+        String sql = UserSql.SELECT_USER_BY_EMAIL;
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    UserDto user = new UserDto();
+                    user.setUserId(rs.getLong("user_id"));
+                    user.setName(rs.getString("name"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPhoneNumber(rs.getString("phone_number"));
+                    user.setMembershipType(rs.getInt("membership_type"));
+                    return user;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 

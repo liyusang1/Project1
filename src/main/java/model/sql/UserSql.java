@@ -15,4 +15,7 @@ public class UserSql {
 
     public static final String UPDATE_PASSWORD =
             "UPDATE Users SET password = ?, updated_at = now() WHERE email = ?";
+
+    public static final String SELECT_USER_BY_EMAIL =
+            "SELECT user_id, name, email, phone_number, membership_type FROM Users WHERE email = ?";
 }
