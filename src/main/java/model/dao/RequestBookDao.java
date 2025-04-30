@@ -13,6 +13,28 @@ import java.util.List;
 
 public class RequestBookDao {
 
+    // 도서 존재 확인
+    public int confirmBook(String title) {
+        String sql = RequestBookSql.SELECT_BOOK_TITLE;
+
+        try(Connection connection = DBUtil.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, title);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    // 희망도서 신청
     public int requestBook(RequestsDto requestsDto) {  // 희망 도서 신청(회원)
         String sql = RequestBookSql.INSERT;
 
@@ -33,6 +55,7 @@ public class RequestBookDao {
         }
     }
 
+    // 희망도서 신청 조회(회원)
     public List<RequestsDto> getMyRequestedBooks(Long userId) {  // 신청 목록 조회(회원)
         String sql = RequestBookSql.SELECT_BY_USER;
         List<RequestsDto> requestsDtos = new ArrayList<>();
@@ -62,6 +85,7 @@ public class RequestBookDao {
         return requestsDtos;
     }
 
+    // 희망도서 신청 조회(관리자)
     public List<RequestsDto> getAllRequestedBooks() {  // 희망 도서 목록 조회(관리자)
         String sql = RequestBookSql.SELECT_ALL;
         List<RequestsDto> requestsDtos = new ArrayList<>();
@@ -89,6 +113,7 @@ public class RequestBookDao {
         return requestsDtos;
     }
 
+    // 희망도서 상태 처리
     public int updateRequestedBookStatus(int updateRequestId, int  updateStatus) {  // 희망 도서 상태 변경(관리자)
         String sql = RequestBookSql.UPDATE;
 

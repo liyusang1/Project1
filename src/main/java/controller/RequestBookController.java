@@ -1,5 +1,7 @@
 package controller;
 
+import model.dto.BookDto;
+
 import model.dto.RequestsDto;
 import model.dto.SampleGiftDto;
 import service.RequestBookService;
@@ -14,19 +16,24 @@ public class RequestBookController {
         this.requestBookService = new RequestBookService();
     }
 
+    // 희망도서 신청
     public void requestBook() {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("신청할 도서명을 입력해주세요. ");
-        String title = sc.next();
+
+        String title = sc.nextLine();
         System.out.print("신청할 도서 저자명을 입력해주세요. ");
-        String author = sc.next();
+        String author = sc.nextLine();
         System.out.print("신청할 도서 출판사를 입력해주세요. ");
-        String publisher = sc.next();
+        String publisher = sc.nextLine();
+
 
         requestBookService.requestBook(title, author, publisher);
     }
 
+
+    // 희망도서 신청 조회(회원)
     public void getMyRequestedBooks() {
         List<RequestsDto> myRequstList = requestBookService.getMyRequestedBooks();
         // 컬럼명 출력
@@ -59,6 +66,7 @@ public class RequestBookController {
 
     }
 
+    // 희망도서 신청 조회(관리자)
     public void getAllRequestedBooks() {
         List<RequestsDto> requestList = requestBookService.getAllRequestedBooks();
 
@@ -92,10 +100,12 @@ public class RequestBookController {
         System.out.println(line);
     }
 
+    // 문자열 자르기
     private String truncate(String str, int maxLength) {
         return str.length() > maxLength ? str.substring(0, maxLength - 1) + "…" : str;
     }
 
+    // 희망도서 상태 처리
     public void updateRequestedBookStatus() {
         Scanner sc = new Scanner(System.in);
 
