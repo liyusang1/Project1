@@ -34,4 +34,8 @@ public class LendingBookSql {
     public static final String APPLY_PENALTY =
             "insert into LateFees(user_id, fee) value (?,?);";
 
+    public static final String SELECT_ALL_LATE_FEE =
+            "SELECT IFNULL(SUM(fee), 0) AS fee\n" +
+                    "FROM LateFees\n" +
+                    "WHERE user_id = ?";
 }
