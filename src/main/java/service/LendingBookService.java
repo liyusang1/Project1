@@ -2,6 +2,7 @@ package service;
 
 import constants.LendingStatus;
 import model.dao.CheckBookExistDao;
+import model.dao.CheckMangerDao;
 import model.dao.CheckUserExistDao;
 import model.dao.LendingBookDao;
 import model.dto.LendingBookDto;
@@ -13,11 +14,13 @@ public class LendingBookService {
     private final LendingBookDao lendingBookDao;
     private final CheckBookExistDao checkBookExistDao;
     private final CheckUserExistDao checkUserExistDao;
+    private final CheckMangerDao checkMangerDao;
 
     public LendingBookService() {
         this.lendingBookDao = new LendingBookDao();
         this.checkBookExistDao = new CheckBookExistDao();
         this.checkUserExistDao = new CheckUserExistDao();
+        this.checkMangerDao = new CheckMangerDao();
     }
 
     /**
@@ -122,7 +125,7 @@ public class LendingBookService {
         //도서 연체로 인해 벌금을 부과해야 하는지
         int penaltyRequired = lendingBookDao.isPenaltyRequired(lendingId);
         if (penaltyRequired > 1) {
-            lendingBookDao.applyPenalty(userId,penaltyRequired);
+            lendingBookDao.applyPenalty(userId, penaltyRequired);
             System.out.println("⚠️ 연체로 인해 벌금이 부과됩니다. 벌금을 납부하기 전까지 대여를 하실 수 없습니다.");
         }
 
@@ -132,7 +135,7 @@ public class LendingBookService {
     /**
      * 대여중인 책 조회
      *
-     * @param
+     * @param userId
      */
     public List<LendingBookDto> getLendingList(Long userId) {
         return lendingBookDao.getLendingList(userId);
@@ -141,9 +144,35 @@ public class LendingBookService {
     /**
      * 연체금액 조회
      *
-     * @param
+     * @param userId
      */
     public int getAllLateFee(Long userId) {
         return lendingBookDao.getAllLateFee(userId);
+    }
+
+    /**
+     * 연체금액 납부
+     *
+     * @param loginId
+     * @param targetId
+     */
+    public int deleteAllLateFeeLogs(Long loginId, Long targetId) {
+
+        if (!checkMangerDao.checkManager(loginId)) {
+            System.out.println("⚠️ 관리자가 아닙니다.");
+            return -1;
+        }
+
+        if (!checkUserExist(targetId)) {
+            System.out.println("⚠️ 존재하지 않는 유저 입니다.");
+            return -1;
+        }
+
+        if (!lendingBookDao.checkLateFeeExist(targetId)) {
+            System.out.println("⚠️ 납부할 연체액이 없습니다!");
+            return -1;
+        }
+
+        return lendingBookDao.deleteAllLateFeeLogs(targetId);
     }
 }

@@ -239,4 +239,46 @@ public class LendingBookDao {
         }
         return -1;
     }
+
+    public int deleteAllLateFeeLogs(Long userId) {
+        String sql = LendingBookSql.DELETE_ALL_LATE_FEE_lOG;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setLong(1, userId);
+
+            //영향을 받은 행의 갯수를 출력하게 된다.
+            return preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -2;
+        }
+    }
+
+    public boolean checkLateFeeExist(Long userId) {
+        String sql = LendingBookSql.CHECK_LATE_FEE_EXIST;
+        boolean available = false;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // 먼저 파라미터 설정
+            preparedStatement.setLong(1, userId);
+
+            // 쿼리 실행
+            // 책은 최대 3개 까지 대출 가능 ->
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next() && resultSet.getInt("fee") >= 1) {
+                    available = true;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return available;
+    }
 }
