@@ -1,5 +1,8 @@
 package controller;
 
+import common.SessionStorage;
+import model.dto.PasswordUpdateDto;
+import model.dto.UserDto;
 import model.dto.UserLoginDto;
 import model.dto.UserSignUpDto;
 import service.UserService;
@@ -25,16 +28,31 @@ public class UserController {
     // 로그인
     public void login(UserLoginDto dto) {
         boolean success = userService.login(dto);
+
         if (success) {
-            System.out.println("🎉 로그인 성공");
+            // 로그인 성공 시 사용자 정보 가져오기
+            UserDto user = userService.getUserByEmail(dto.getEmail());
+
+            // 세션에 저장
+            SessionStorage.setSession(user);
+
+            System.out.println("🎉 로그인 성공! " + user.getName() + "님 환영합니다.");
+
         } else {
             System.out.println("❌ 로그인 실패: 이메일 또는 비밀번호를 확인하세요.");
         }
     }
 
+    // 로그아웃
+    public void logout() {
+        SessionStorage.logout();
+        System.out.println("👋 로그아웃 되었습니다.");
+    }
+
     // 비밀번호 변경
-    public void resetPassword(String email, String phoneNumber, String newPassword) {
-        boolean success = userService.resetPassword(email, phoneNumber, newPassword);
+    public void resetPassword(PasswordUpdateDto dto) {
+        boolean success = userService.resetPassword(dto);
+
         if (success) {
             System.out.println("🔐 비밀번호가 성공적으로 변경되었습니다.");
         } else {

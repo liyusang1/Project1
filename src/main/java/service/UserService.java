@@ -1,6 +1,8 @@
 package service;
 
 import model.dao.UserDao;
+import model.dto.PasswordUpdateDto;
+import model.dto.UserDto;
 import model.dto.UserLoginDto;
 import model.dto.UserSignUpDto;
 
@@ -73,14 +75,19 @@ public class UserService {
     }
 
     // 비밀번호 변경
-    public boolean resetPassword(String email, String phoneNumber, String newPassword) {
-        if (!userDao.verifyUserByEmailAndPhone(email, phoneNumber)) {
+    public boolean resetPassword(PasswordUpdateDto dto) {
+        if (!userDao.verifyUserByEmailAndPhone(dto.getEmail(), dto.getPhoneNumber())) {
+
             System.out.println("⚠️ 이메일이나 전화번호가 일치하지 않습니다.");
             return false;
         }
 
-        String hashed = hashPassword(newPassword);
-        return userDao.updatePassword(email, hashed);
+        String hashedPassword = hashPassword(dto.getNewPassword()); // 암호화된 비밀번호로 덮어쓰기
+        return userDao.updatePassword(dto.getEmail(), hashedPassword);
+    }
+
+    public UserDto getUserByEmail(String email) {
+        return userDao.getUserByEmail(email);
     }
 
 }
