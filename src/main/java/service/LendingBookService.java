@@ -3,8 +3,10 @@ package service;
 import model.dao.CheckBookExistDao;
 import model.dao.CheckUserExistDao;
 import model.dao.LendingBookDao;
+import model.dto.LendingBookDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class LendingBookService {
     private final LendingBookDao lendingBookDao;
@@ -85,7 +87,8 @@ public class LendingBookService {
 
     /**
      * 도서 반납
-     * @param userId  유저pk
+     *
+     * @param userId    유저pk
      * @param lendingId 대출pk
      */
     public int returnBook(Long lendingId, Long userId) {
@@ -106,5 +109,14 @@ public class LendingBookService {
         }
 
         return lendingBookDao.returnBooks(lendingId);
+    }
+
+    /**
+     * 대여중인 책 조회
+     *
+     * @param
+     */
+    public List<LendingBookDto> getLendingList(Long userId) {
+        return lendingBookDao.getLendingList(userId);
     }
 }

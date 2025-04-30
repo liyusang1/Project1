@@ -1,10 +1,13 @@
 package model.dao;
 
+import model.dto.LendingBookDto;
 import model.sql.LendingBookSql;
 import util.DBUtil;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LendingBookDao {
     private final static int isBorrowed = 0;
@@ -120,5 +123,31 @@ public class LendingBookDao {
         }
 
         return available;
+    }
+
+    public List<LendingBookDto> getLendingList(Long userId) {
+        String sql = LendingBookSql.SELECT_LENDING_LIST;
+        List<LendingBookDto> lendingBookDtos = new ArrayList<>();
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
+            preparedStatement.setLong(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                LendingBookDto lendingBookDto = new LendingBookDto();
+                lendingBookDto.setLendingId(resultSet.getInt("lending_id"));
+                lendingBookDto.setTitle(resultSet.getString("title"));
+                lendingBookDto.setPublisher(resultSet.getString("author"));
+                lendingBookDto.setAuthor(resultSet.getString("publisher"));
+                lendingBookDtos.add(lendingBookDto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lendingBookDtos;
     }
 }
