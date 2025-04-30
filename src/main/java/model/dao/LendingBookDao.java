@@ -139,8 +139,8 @@ public class LendingBookDao {
                 LendingBookDto lendingBookDto = new LendingBookDto();
                 lendingBookDto.setLendingId(resultSet.getInt("lending_id"));
                 lendingBookDto.setTitle(resultSet.getString("title"));
-                lendingBookDto.setPublisher(resultSet.getString("author"));
-                lendingBookDto.setAuthor(resultSet.getString("publisher"));
+                lendingBookDto.setAuthor(resultSet.getString("author"));
+                lendingBookDto.setPublisher(resultSet.getString("publisher"));
                 lendingBookDtos.add(lendingBookDto);
             }
 
