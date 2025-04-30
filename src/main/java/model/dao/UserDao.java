@@ -2,6 +2,7 @@ package model.dao;
 
 import model.dto.UserLoginDto;
 import model.dto.UserSignUpDto;
+import model.sql.UserSql;
 import util.DBUtil;
 
 import java.sql.Connection;
@@ -14,7 +15,7 @@ public class UserDao {
 
     // 회원가입
     public int insertUser(UserSignUpDto userSignUpDto) {
-        String sql = "INSERT INTO Users (name, email, phone_number, membership_type, password) VALUES (?, ?, ?, ?, ?)";
+        String sql = UserSql.INSERT_USER;
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)){
@@ -34,7 +35,7 @@ public class UserDao {
 
     // 이메일 중복 여부
     public boolean isEmailDuplicate(String email) {
-        String sql = "SELECT 1 FROM Users WHERE email = ?"; // SELECT 1 = 존재 여부만 체크 (빠르고 가벼움)
+        String sql = UserSql.CHECK_EMAIL_DUPLICATE;
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -52,7 +53,7 @@ public class UserDao {
 
     // 로그인
     public boolean loginUser(UserLoginDto userLoginDto) {
-        String sql = "SELECT * FROM Users WHERE email = ? AND password = ?";
+        String sql = UserSql.LOGIN_USER;
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -72,7 +73,7 @@ public class UserDao {
 
     // 사용자 존재 확인
     public boolean verifyUserByEmailAndPhone(String email, String phoneNumber) {
-        String sql = "SELECT 1 FROM Users WHERE email = ? AND phone_number = ?";
+        String sql = UserSql.VERIFY_USER;
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -88,7 +89,7 @@ public class UserDao {
 
     // 비밀번호 업데이트
     public boolean updatePassword(String email, String hashedPassword) {
-        String sql = "UPDATE Users SET password = ?, updated_at = now() WHERE email = ?";
+        String sql = UserSql.UPDATE_PASSWORD;
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, hashedPassword);
