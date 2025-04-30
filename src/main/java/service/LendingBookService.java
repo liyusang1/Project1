@@ -26,6 +26,22 @@ public class LendingBookService {
      */
     public int insertLending(Long bookId, Long userId, LocalDateTime dueDate) {
 
+        // bookId, userId, dueDate 유효성 검사
+        if (bookId == null) {
+            System.out.println("⚠️ 책 번호가 입력되지 않았습니다.");
+            return 0;
+        }
+
+        if (userId == null) {
+            System.out.println("⚠️ 유저 번호가 입력되지 않았습니다.");
+            return 0;
+        }
+
+        if (dueDate == null) {
+            System.out.println("⚠️ 만기 기한이 입력되지 않았습니다.");
+            return 0;
+        }
+
         //책 유효성 검사
         if (!checkBookExist(bookId)) {
             System.out.println("⚠️ 존재하지 않는 책 번호 입니다.");
