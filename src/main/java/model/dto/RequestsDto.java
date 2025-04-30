@@ -15,10 +15,9 @@ public class RequestsDto {
     private int status;
 
     public RequestsDto() {}
-    public RequestsDto(Long requestId, Long userId, String requestBook,
+    public RequestsDto(Long userId, String requestBook,
                        String requestAuthor, String requestPublisher,
                        Date createAt, int status) {
-        this.requestId = requestId;
         this.userId = userId;
         this.requestBook = requestBook;
         this.requestAuthor = requestAuthor;
