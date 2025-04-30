@@ -88,4 +88,8 @@ public class BookRegisterService {
         return bookRegisterDao.getAllBooks();
     }
 
+    public List<BookDto> getAvailableBooks() {
+
+        return bookRegisterDao.getAvailableBooks();
+    }
 }
