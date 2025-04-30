@@ -3,6 +3,7 @@ package controller;
 import model.dto.BookDto;
 import service.BookRegisterService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookRegisterController {
@@ -28,17 +29,91 @@ public class BookRegisterController {
 
     public void getAllBook() {
         List<BookDto> bookList = bookRegisterService.getAllBooks();
-        bookList.forEach(g -> System.out.printf(
-                "%d %s %s %d %d %s %d %s\n",
-                g.getBookId(),        // %d
-                g.getTitle(),         // %s
-                g.getAuthor(),        // %s
-                g.getPrice(),         // %d
-                g.getCategoryId(),    // %d
-                g.getPublisher(),     // %s
-                g.getStatus(),        // %d
-                g.getCreatedAt()      // %s (LocalDateTime → 문자열 출력)
-        ));
+        for (BookDto book : bookList) {
+            StringBuilder format = new StringBuilder();
+            List<Object> values = new ArrayList<>();
+
+            if (book.getBookId() != null) {
+                format.append("ID: %d ");
+                values.add(book.getBookId());
+            }
+            if (book.getTitle() != null) {
+                format.append("Title: %s ");
+                values.add(book.getTitle());
+            }
+            if (book.getAuthor() != null) {
+                format.append("Author: %s ");
+                values.add(book.getAuthor());
+            }
+            if (book.getPrice() > 0) {
+                format.append("Price: %d ");
+                values.add(book.getPrice());
+            }
+            if (book.getCategoryId() != null) {
+                format.append("Category: %d ");
+                values.add(book.getCategoryId());
+            }
+            if (book.getPublisher() != null) {
+                format.append("Publisher: %s ");
+                values.add(book.getPublisher());
+            }
+            if (book.getStatus() == 1) {
+                format.append("Status: 대출가능 ");
+            } else if (book.getStatus() == 0) {
+                format.append("Status: 대출 중");
+            }
+            if (book.getCreatedAt() != null) {
+                format.append("Created: %s ");
+                values.add(book.getCreatedAt().toString());
+            }
+
+            System.out.printf(format.toString().trim() + "%n", values.toArray());
+        }
     }
+
+    public void getAvailableBooks() {
+        List<BookDto> bookList = bookRegisterService.getAvailableBooks();
+        for (BookDto book : bookList) {
+            StringBuilder format = new StringBuilder();
+            List<Object> values = new ArrayList<>();
+
+            if (book.getBookId() != null) {
+                format.append("ID: %d ");
+                values.add(book.getBookId());
+            }
+            if (book.getTitle() != null) {
+                format.append("Title: %s ");
+                values.add(book.getTitle());
+            }
+            if (book.getAuthor() != null) {
+                format.append("Author: %s ");
+                values.add(book.getAuthor());
+            }
+            if (book.getPrice() > 0) {
+                format.append("Price: %d ");
+                values.add(book.getPrice());
+            }
+            if (book.getCategoryId() != null) {
+                format.append("Category: %d ");
+                values.add(book.getCategoryId());
+            }
+            if (book.getPublisher() != null) {
+                format.append("Publisher: %s ");
+                values.add(book.getPublisher());
+            }
+            if (book.getStatus() == 1) {
+                format.append("Status: 대출가능 ");
+            } else if (book.getStatus() == 0) {
+                format.append("Status: 대출 중");
+            }
+            if (book.getCreatedAt() != null) {
+                format.append("Created: %s ");
+                values.add(book.getCreatedAt().toString());
+            }
+
+            System.out.printf(format.toString().trim() + "%n", values.toArray());
+        }
+    }
+
 
 }
