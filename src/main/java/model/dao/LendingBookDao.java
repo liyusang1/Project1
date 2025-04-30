@@ -220,4 +220,23 @@ public class LendingBookDao {
             return -1;
         }
     }
+
+    public int getAllLateFee(Long userId) {
+        String sql = LendingBookSql.SELECT_ALL_LATE_FEE;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setLong(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("fee");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

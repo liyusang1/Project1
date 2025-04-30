@@ -137,4 +137,13 @@ public class LendingBookService {
     public List<LendingBookDto> getLendingList(Long userId) {
         return lendingBookDao.getLendingList(userId);
     }
+
+    /**
+     * 연체금액 조회
+     *
+     * @param
+     */
+    public int getAllLateFee(Long userId) {
+        return lendingBookDao.getAllLateFee(userId);
+    }
 }

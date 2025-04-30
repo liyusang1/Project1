@@ -48,6 +48,13 @@ public class LendingBookController {
                 g.getLendingId(), g.getTitle(), g.getAuthor(), g.getPublisher()));
     }
 
+    // 연체액 조회
+    public void getAllLateFee(Long userId) {
+
+        int lateEee = lendingBookService.getAllLateFee(userId);
+        System.out.printf("🎉 납부해야할 연체 벌금 : %d\n", lateEee);
+    }
+
     //책 대출/반납 통합 시스템 -> 로그인한 사용자의 userid를 받는다
     public void lendBookSystem(Long userId) {
         Scanner scanner = new Scanner(System.in);
@@ -59,6 +66,7 @@ public class LendingBookController {
             System.out.println("📖  1 : 대출");
             System.out.println("📕  2 : 반납");
             System.out.println("📘  3 : 대출 목록 조회");
+            System.out.println("📕  4 : 연체액 조회");
             System.out.println("📙  exit : 종료");
             System.out.println("----------------------------------------");
             System.out.println("⌨️  명령어를 입력해 주세요.");
@@ -83,6 +91,8 @@ public class LendingBookController {
             } else if (input.equals("3")) {
                 System.out.println("\uD83D\uDCD8 대출 목록을 출력합니다.");
                 getAllLending(userId);
+            } else if (input.equals("4")) {
+                getAllLateFee(userId);
             }
         }
     }
