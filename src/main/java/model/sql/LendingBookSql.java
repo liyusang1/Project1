@@ -38,4 +38,10 @@ public class LendingBookSql {
             "SELECT IFNULL(SUM(fee), 0) AS fee\n" +
                     "FROM LateFees\n" +
                     "WHERE user_id = ?";
+
+    public static final String DELETE_ALL_LATE_FEE_lOG =
+            "delete from LateFees where user_id = ?";
+
+    public static final String CHECK_LATE_FEE_EXIST =
+            "select count(1) as fee from LateFees where user_id = ?";
 }
