@@ -9,4 +9,10 @@ public class LendingBookSql {
 
     public static final String CHECK_USER_LATE_FEE =
             "SELECT COUNT(1) AS check_fee FROM LateFees WHERE user_id = ?";
+
+    public static final String RETURN_BOOK =
+            "update Lendings set status = ?,return_date=? where lending_id = ?";
+
+    public static final String CHECK_LENDING_EXIST =
+            "SELECT COUNT(1) AS check_lending FROM Lendings WHERE user_id = ? and lending_id = ? and status = 0";
 }

@@ -55,13 +55,13 @@ public class LendingBookService {
         }
 
         //현재 대출 중인지 체크
-        if(!lendingBookDao.checkUserLendingExist(userId)) {
+        if (!lendingBookDao.checkUserLendingExist(userId)) {
             System.out.println("⚠️ 해당 유저는 현재 대출 중 입니다.");
             return 0;
         }
 
         //연체로인한 벌금 지불 대상자인지 체크 -> 연체로 인해 발생한 벌금을 납부하지않았다면 도서 시스템 이용 불가
-        if(!lendingBookDao.checkUsersLateFee(userId)) {
+        if (!lendingBookDao.checkUsersLateFee(userId)) {
             System.out.println("⚠️ 해당 유저는 연체로 인한 벌금을 납부하지 않았으므로 대출이 불가능 합니다.");
             return 0;
         }
@@ -81,5 +81,30 @@ public class LendingBookService {
      */
     public boolean checkUserExist(Long userId) {
         return checkUserExistDao.checkUserExist(userId);
+    }
+
+    /**
+     * 도서 반납
+     * @param userId  유저pk
+     * @param lendingId 대출pk
+     */
+    public int returnBook(Long lendingId, Long userId) {
+
+        if (lendingId == null) {
+            System.out.println("⚠️ 대출 번호가 입력되지 않았습니다.");
+            return 0;
+        }
+
+        if (userId == null) {
+            System.out.println("⚠️ 유저 번호가 입력되지 않았습니다.");
+            return 0;
+        }
+
+        if (!lendingBookDao.checkLendingExist(userId, lendingId)) {
+            System.out.println("⚠️ 올바른 lendingId 입력하세요.");
+            return 0;
+        }
+
+        return lendingBookDao.returnBooks(lendingId);
     }
 }

@@ -77,4 +77,48 @@ public class LendingBookDao {
 
         return available;
     }
+
+    public int returnBooks(Long lendingId) {
+        String sql = LendingBookSql.RETURN_BOOK;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setLong(1, isReturned);
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            preparedStatement.setLong(3, lendingId);
+
+            //영향을 받은 행의 갯수를 출력하게 된다.
+            return preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public boolean checkLendingExist(Long userId, Long lendingId) {
+        String sql = LendingBookSql.CHECK_LENDING_EXIST;
+        boolean available = false;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // 먼저 파라미터 설정
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setLong(2, lendingId);
+
+            // 쿼리 실행
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next() && resultSet.getInt("check_lending") == 1) {
+                    available = true;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return available;
+    }
 }

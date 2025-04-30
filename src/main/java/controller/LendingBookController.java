@@ -22,4 +22,15 @@ public class LendingBookController {
             System.out.println("❌ 오류가 발생했습니다. 관리자에게 문의하세요.");
         }
     }
+
+    public void returnBook(Long lendingId, Long userId) {
+        int result = lendingBookService.returnBook(lendingId, userId);
+        if (result == 1) {
+            System.out.println("🎉 반납 성공");
+        } else if (result == 0) {
+            System.out.println("⚠️ 반납 실패");
+        } else if (result == -1) {
+            System.out.println("❌ 오류가 발생했습니다. 관리자에게 문의하세요.");
+        }
+    }
 }
