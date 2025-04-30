@@ -1,5 +1,6 @@
 package model.dao;
 
+import constants.LendingStatus;
 import model.dto.LendingBookDto;
 import model.sql.LendingBookSql;
 import util.DBUtil;
@@ -10,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LendingBookDao {
-    private final static int isBorrowed = 0;
-    private final static int isReturned = 1;
 
     public int insertLending(Long bookId, Long userId, LocalDateTime dueDate) {
         String sql = LendingBookSql.INSERT;
@@ -22,7 +21,7 @@ public class LendingBookDao {
             preparedStatement.setLong(1, bookId);
             preparedStatement.setLong(2, userId);
             preparedStatement.setTimestamp(3, Timestamp.valueOf(dueDate));
-            preparedStatement.setInt(4, isBorrowed);
+            preparedStatement.setInt(4, LendingStatus.IS_BORROWED);
 
             //영향을 받은 행의 갯수를 출력하게 된다.
             return preparedStatement.executeUpdate();
@@ -44,8 +43,9 @@ public class LendingBookDao {
             preparedStatement.setLong(1, userId);
 
             // 쿼리 실행
+            // 책은 최대 3개 까지 대출 가능 ->
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next() && resultSet.getInt("check_lending") < 1) {
+                if (resultSet.next() && resultSet.getInt("check_lending") < 4) {
                     available = true;
                 }
             }
@@ -87,7 +87,7 @@ public class LendingBookDao {
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setLong(1, isReturned);
+            preparedStatement.setLong(1, LendingStatus.IS_RETURNED);
             preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             preparedStatement.setLong(3, lendingId);
 
@@ -149,5 +149,40 @@ public class LendingBookDao {
         }
 
         return lendingBookDtos;
+    }
+
+    public int updateBookStatus(Long bookId, int status) {
+        String sql = LendingBookSql.UPDATE_BOOK_STATUS;
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, status);
+            preparedStatement.setLong(2, bookId);
+
+            //영향을 받은 행의 갯수를 출력하게 된다.
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public Long getBookIdFromLendingId(Long lendingId) {
+        String sql = LendingBookSql.GET_BOOK_ID_FROM_LENDING_ID;
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setLong(1, lendingId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getLong("book_id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1L;
     }
 }

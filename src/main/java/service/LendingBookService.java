@@ -1,5 +1,6 @@
 package service;
 
+import constants.LendingStatus;
 import model.dao.CheckBookExistDao;
 import model.dao.CheckUserExistDao;
 import model.dao.LendingBookDao;
@@ -46,7 +47,7 @@ public class LendingBookService {
 
         //책 유효성 검사
         if (!checkBookExist(bookId)) {
-            System.out.println("⚠️ 존재하지 않는 책 번호 입니다.");
+            System.out.println("⚠️ 존재하지 않는 책 번호이거나 대출 중인 책 입니다.");
             return 0;
         }
 
@@ -58,7 +59,7 @@ public class LendingBookService {
 
         //현재 대출 중인지 체크
         if (!lendingBookDao.checkUserLendingExist(userId)) {
-            System.out.println("⚠️ 해당 유저는 현재 대출 중 입니다.");
+            System.out.println("⚠️ 해당 유저는 현재 대출 중 입니다. 책은 최대 3권까지 대출할 수 있습니다.");
             return 0;
         }
 
@@ -68,6 +69,8 @@ public class LendingBookService {
             return 0;
         }
 
+        //대여 상태를 대출불가능 상태로 변경
+        lendingBookDao.updateBookStatus(bookId, LendingStatus.IS_BORROWED);
         return lendingBookDao.insertLending(bookId, userId, dueDate);
     }
 
@@ -108,6 +111,13 @@ public class LendingBookService {
             return 0;
         }
 
+        Long bookId = lendingBookDao.getBookIdFromLendingId(lendingId);
+        if (bookId == -1L) {
+            return -1;
+        }
+
+        //대여 상태를 대출가능 상태로 변경
+        lendingBookDao.updateBookStatus(bookId, LendingStatus.IS_RETURNED);
         return lendingBookDao.returnBooks(lendingId);
     }
 

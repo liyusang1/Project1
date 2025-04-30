@@ -19,4 +19,11 @@ public class LendingBookSql {
     public static final String SELECT_LENDING_LIST =
             "select lending_id,title,author,publisher from Books join Lendings on Lendings.book_id = Books.book_id\n" +
                     "where Lendings.user_id = ? and Lendings.status = 0";
+
+    public static final String UPDATE_BOOK_STATUS =
+            "update Books set status = ? where book_id = ?";
+
+    public static final String GET_BOOK_ID_FROM_LENDING_ID =
+            "select book_id from Lendings where lending_id = ?";
+
 }
