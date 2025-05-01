@@ -1,10 +1,15 @@
 package model.dao;
 
 import model.dto.BookDto;
+import model.dto.CategoryDto;
+import model.dto.SelectBookDto;
+import model.dto.UserDto;
 import model.sql.BookRegisterSql;
+import model.sql.UserManageSql;
 import util.DBUtil;
 import util.MapResultSetToDto;
 
+import java.awt.print.Book;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,34 +42,10 @@ public class BookRegisterDao {
         }
     }
 
-    public boolean checkBookAvailability(Long bookId) {
-        String sql = BookRegisterSql.CHECKBOOK;
-        boolean available = false;
-
-        try (Connection connection = DBUtil.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            // 먼저 파라미터 설정
-            preparedStatement.setLong(1, bookId);
-
-            // 쿼리 실행
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next() && resultSet.getInt("check_book") == 1) {
-                    available = true;
-                }
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return available;
-    }
-
     // 모든 책 출력
-    public List<BookDto> getAllBooks() {
+    public List<SelectBookDto> getAllBooks() {
         String sql = BookRegisterSql.SELECT_ALL_BOOKS;
-        List<BookDto> bookList = new ArrayList<>();
+        List<SelectBookDto> bookList = new ArrayList<>();
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -82,9 +63,9 @@ public class BookRegisterDao {
     }
 
     //     대출가능한 status 도서만 조회
-    public List<BookDto> getAvailableBooks() {
+    public List<SelectBookDto> getAvailableBooks() {
         String sql = BookRegisterSql.SELECT_AVAILABLE_BOOKS;
-        List<BookDto> bookList = new ArrayList<>();
+        List<SelectBookDto> bookList = new ArrayList<>();
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -100,5 +81,75 @@ public class BookRegisterDao {
 
         return bookList;
     }
+
+    /**
+     * Select문이면서 parameter존재할 때 Connection 및 Statement이후 ResultSet은 별도로 처리
+     */
+    public List<SelectBookDto> getBookById(Long targetId) {
+        String sql = BookRegisterSql.SELECT_BOOK_BY_ID;
+        List<SelectBookDto> bookList = new ArrayList<>();
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setLong(1, targetId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    bookList.add(MapResultSetToDto.mapResultSetToBookDto(rs));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookList;
+    }
+
+    public List<SelectBookDto> getBookByCategoryId(Long targetId) {
+        String sql = BookRegisterSql.SELECT_BOOK_BY_CATEGORY;
+        List<SelectBookDto> bookList = new ArrayList<>();
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setLong(1, targetId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    bookList.add(MapResultSetToDto.mapResultSetToBookDto(rs));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookList;
+    }
+
+    public List<CategoryDto> getAllCategory() {
+        String sql = BookRegisterSql.SELECT_ALL_CATEGORY;
+        List<CategoryDto> categoryList = new ArrayList<>();
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet rs = preparedStatement.executeQuery()) {
+
+            while (rs.next()) {
+                CategoryDto categoryDto = new CategoryDto();
+                categoryDto.setCategory_id(rs.getLong("category_id"));
+                categoryDto.setCategory(rs.getString("category"));
+
+                categoryList.add(categoryDto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return categoryList;
+    }
+
+
 }
 
