@@ -5,8 +5,11 @@ import model.dto.LendingBookDto;
 import service.LendingBookService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
+
+import static util.StringTruncate.truncate;
 
 
 public class LendingBookController {
@@ -46,8 +49,27 @@ public class LendingBookController {
         if (lendingBookDtoList.isEmpty()) {
             System.out.println("⚠️ 대출 목록이 없습니다!");
         }
-        lendingBookDtoList.forEach(g -> System.out.printf("🎉 대출번호 : %d -> 책 이름 : %s, 저자 : %s, 출판사:  %s\n",
-                g.getLendingId(), g.getTitle(), g.getAuthor(), g.getPublisher()));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        System.out.printf("| %-10s | %-30s | %-20s | %-20s | %-12s |\n",
+                "\uD83D\uDCDA대출번호",   // 📚 대출번호
+                "\uD83D\uDCD6책이름",   // 📖 책이름
+                "✍️ 저자",              // ✍️ 저자
+                "\uD83D\uDCC4 출판사",  // 📄 출판사
+                "\uD83D\uDD50 반납예정일" // 🔐 반납예정일
+        );
+
+        System.out.println("|-------------------------------------------------------------------------------------------------------------------------");
+
+        lendingBookDtoList.forEach(g -> {
+            System.out.printf("| %-10d | %-30s | %-20s | %-20s | %-12s |\n",
+                    g.getLendingId(),
+                    truncate(g.getTitle(), 30),
+                    truncate(g.getAuthor(), 20),
+                    truncate(g.getPublisher(), 20),
+                    g.getDueDate().format(formatter)
+            );
+        });
     }
 
     // 연체액 조회

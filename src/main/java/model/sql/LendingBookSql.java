@@ -17,7 +17,7 @@ public class LendingBookSql {
             "SELECT COUNT(1) AS check_lending FROM Lendings WHERE user_id = ? and lending_id = ? and status = 0";
 
     public static final String SELECT_LENDING_LIST =
-            "select lending_id,title,author,publisher from Books join Lendings on Lendings.book_id = Books.book_id\n" +
+            "select lending_id,title,author,publisher,due_date from Books join Lendings on Lendings.book_id = Books.book_id\n" +
                     "where Lendings.user_id = ? and Lendings.status = 0";
 
     public static final String UPDATE_BOOK_STATUS =
