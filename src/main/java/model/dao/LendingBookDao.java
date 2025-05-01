@@ -1,6 +1,7 @@
 package model.dao;
 
 import constants.LendingStatus;
+import constants.ResultCode;
 import model.dto.LendingBookDto;
 import model.sql.LendingBookSql;
 import util.DBUtil;
@@ -28,7 +29,7 @@ public class LendingBookDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            return ResultCode.IS_ERROR;
         }
     }
 
@@ -96,7 +97,7 @@ public class LendingBookDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            return ResultCode.IS_ERROR;
         }
     }
 
@@ -164,7 +165,7 @@ public class LendingBookDao {
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            return ResultCode.IS_ERROR;
         }
     }
 
@@ -201,7 +202,7 @@ public class LendingBookDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1;
+        return ResultCode.IS_ERROR;
     }
 
     public int applyPenalty(Long lendingId, int penaltyRequired) {
@@ -217,7 +218,7 @@ public class LendingBookDao {
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            return ResultCode.IS_ERROR;
         }
     }
 
@@ -237,7 +238,7 @@ public class LendingBookDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1;
+        return ResultCode.IS_ERROR;
     }
 
     public int deleteAllLateFeeLogs(Long userId) {
@@ -253,7 +254,7 @@ public class LendingBookDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return -2;
+            return ResultCode.LATE_FEE_LOGS_DELETE_ERROR;
         }
     }
 
