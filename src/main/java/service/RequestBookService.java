@@ -13,7 +13,7 @@ public class RequestBookService {
     public RequestBookService() { this.requestBookDao = new RequestBookDao(); }
 
     // 희망도서 신청
-    public int requestBook(String title, String author, String publisher) {
+    public int requestBook(Long userId, String title, String author, String publisher) {
         int count = requestBookDao.confirmBook(title);
 
         if (count > 0) {
@@ -23,7 +23,7 @@ public class RequestBookService {
 
         Date today =  new Date(System.currentTimeMillis());
         RequestsDto dto = new RequestsDto();
-        Long userId = 2L;
+
         dto.setUserId(userId);
         dto.setRequestBook(title);
         dto.setRequestAuthor(author);
@@ -43,9 +43,8 @@ public class RequestBookService {
     }
 
     // 희망도서 신청 조회(회원)
-    public List<RequestsDto> getMyRequestedBooks() {
+    public List<RequestsDto> getMyRequestedBooks(Long userId) {
         RequestsDto dto = new RequestsDto();
-        Long userId = 1L;
 
         return requestBookDao.getMyRequestedBooks(userId);
     }
