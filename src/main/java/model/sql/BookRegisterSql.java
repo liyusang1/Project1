@@ -12,7 +12,7 @@ public class BookRegisterSql {
 
     public static final String CHECKBOOK = "SELECT COUNT(1) AS check_book FROM Books WHERE book_id = ?";
 
-    public static final String CARTEGORY_SELECTALL = "SELECT * FROM Categorys";
+    public static final String CATEGORY_SELECT_ALL = "SELECT * FROM Categorys";
 
 }
 
