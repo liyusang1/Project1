@@ -1,6 +1,6 @@
 package util;
 
-import model.dto.BookDto;
+import model.dto.SelectBookDto;
 import model.dto.UserDto;
 
 import java.sql.ResultSet;
@@ -17,8 +17,8 @@ public class MapResultSetToDto {
      */
 
     // Book
-    public static BookDto mapResultSetToBookDto(ResultSet rs) throws SQLException {
-        BookDto book = new BookDto();
+    public static SelectBookDto mapResultSetToBookDto(ResultSet rs) throws SQLException {
+        SelectBookDto book = new SelectBookDto();
         ResultSetMetaData metaData = rs.getMetaData();
         int columnCount = metaData.getColumnCount();
 
@@ -36,8 +36,8 @@ public class MapResultSetToDto {
         if (columnNames.contains("author")) {
             book.setAuthor(rs.getString("author"));
         }
-        if (columnNames.contains("category_id")) {
-            book.setCategoryId(rs.getLong("category_id"));
+        if (columnNames.contains("category")) {
+            book.setCategory(rs.getString("category"));
         }
         if (columnNames.contains("publisher")) {
             book.setPublisher(rs.getString("publisher"));

@@ -4,7 +4,11 @@ import model.dao.BookRegisterDao;
 import model.dao.CheckCateoryExistDao;
 import model.dao.CheckMangerDao;
 import model.dto.BookDto;
+import model.dto.CategoryDto;
+import model.dto.SelectBookDto;
+import model.dto.UserDto;
 
+import java.awt.print.Book;
 import java.util.List;
 
 public class BookRegisterService {
@@ -83,13 +87,29 @@ public class BookRegisterService {
      * 조회 메서드
      */
 
-    public List<BookDto> getAllBooks() {
+    public List<SelectBookDto> getAllBooks() {
 
         return bookRegisterDao.getAllBooks();
     }
 
-    public List<BookDto> getAvailableBooks() {
+    public List<SelectBookDto> getAvailableBooks() {
 
         return bookRegisterDao.getAvailableBooks();
     }
+
+    public List<SelectBookDto> getBookById(Long targetId) {
+
+        return bookRegisterDao.getBookById(targetId);
+    }
+
+    public List<SelectBookDto> getBookByCategoryId(Long targetId) {
+
+        return bookRegisterDao.getBookByCategoryId(targetId);
+    }
+
+    public List<CategoryDto> getAllCategory() {
+
+        return bookRegisterDao.getAllCategory();
+    }
+
 }
