@@ -142,6 +142,7 @@ public class LendingBookDao {
                 lendingBookDto.setTitle(resultSet.getString("title"));
                 lendingBookDto.setAuthor(resultSet.getString("author"));
                 lendingBookDto.setPublisher(resultSet.getString("publisher"));
+                lendingBookDto.setDueDate(resultSet.getTimestamp("due_date").toLocalDateTime());
                 lendingBookDtos.add(lendingBookDto);
             }
 
