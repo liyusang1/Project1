@@ -147,6 +147,12 @@ public class LendingBookService {
      * @param userId
      */
     public int getAllLateFee(Long userId) {
+
+        //관리자라면 연체금액이 존재하지 않는다
+        if (checkMangerDao.checkManager(userId)) {
+            return -1;
+        }
+
         return lendingBookDao.getAllLateFee(userId);
     }
 
@@ -160,6 +166,11 @@ public class LendingBookService {
 
         if (!checkMangerDao.checkManager(loginId)) {
             System.out.println("⚠️ 관리자가 아닙니다.");
+            return -1;
+        }
+
+        if (checkMangerDao.checkManager(targetId)) {
+            System.out.println("⚠️ 입력된 userId는 관리자입니다. 일반유저를 대상으로만 연체금액 납부처리를 할 수 있습니다.");
             return -1;
         }
 

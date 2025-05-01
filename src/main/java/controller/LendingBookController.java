@@ -51,8 +51,12 @@ public class LendingBookController {
     // 연체액 조회
     public void getAllLateFee(Long userId) {
 
-        int lateEee = lendingBookService.getAllLateFee(userId);
-        System.out.printf("🎉 납부해야할 연체 벌금 : %d\n", lateEee);
+        int lateFee = lendingBookService.getAllLateFee(userId);
+        if (lateFee == -1) {
+            System.out.println("⚠️ 관리자는 연체액이 부과되지 않습니다!\n");
+        } else {
+            System.out.printf("🎉 납부해야할 연체 벌금 : %d\n", lateFee);
+        }
     }
 
     // 연체액 납부
