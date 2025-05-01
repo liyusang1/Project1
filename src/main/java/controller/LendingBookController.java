@@ -1,11 +1,13 @@
 package controller;
 
+import constants.ResultCode;
 import model.dto.LendingBookDto;
 import service.LendingBookService;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
+
 
 public class LendingBookController {
     private final LendingBookService lendingBookService;
@@ -17,11 +19,11 @@ public class LendingBookController {
     // 대출처리
     public void insertLending(Long bookId, Long userId, LocalDateTime dueDate) {
         int result = lendingBookService.insertLending(bookId, userId, dueDate);
-        if (result == 1) {
+        if (result == ResultCode.IS_SUCCESS) {
             System.out.println("🎉 대출 성공");
-        } else if (result == 0) {
+        } else if (result == ResultCode.IS_FAIL) {
             System.out.println("⚠️ 대출 실패");
-        } else if (result == -1) {
+        } else if (result == ResultCode.IS_ERROR) {
             System.out.println("❌ 오류가 발생했습니다. 관리자에게 문의하세요.");
         }
     }
@@ -29,11 +31,11 @@ public class LendingBookController {
     // 반납 처리
     public void returnBook(Long lendingId, Long userId) {
         int result = lendingBookService.returnBook(lendingId, userId);
-        if (result == 1) {
+        if (result == ResultCode.IS_SUCCESS) {
             System.out.println("🎉 반납 성공");
-        } else if (result == 0) {
+        } else if (result == ResultCode.IS_FAIL) {
             System.out.println("⚠️ 반납 실패");
-        } else if (result == -1) {
+        } else if (result == ResultCode.IS_ERROR) {
             System.out.println("❌ 오류가 발생했습니다. 관리자에게 문의하세요.");
         }
     }
@@ -52,7 +54,7 @@ public class LendingBookController {
     public void getAllLateFee(Long userId) {
 
         int lateFee = lendingBookService.getAllLateFee(userId);
-        if (lateFee == -1) {
+        if (lateFee == ResultCode.IS_ERROR) {
             System.out.println("⚠️ 관리자는 연체액이 부과되지 않습니다!\n");
         } else {
             System.out.printf("🎉 납부해야할 연체 벌금 : %d\n", lateFee);
@@ -64,11 +66,11 @@ public class LendingBookController {
 
         int result = lendingBookService.deleteAllLateFeeLogs(loginId, targetId);
 
-        if (result >= 0) {
+        if (result >= ResultCode.LATE_FEE_LOGS_DELETE_SUCCESS) {
             System.out.println("🎉 연체액 납부 성공 ");
-        } else if (result == -1) {
+        } else if (result == ResultCode.LATE_FEE_LOGS_DELETE_FAIL) {
             System.out.println("⚠️ 연체액 납부 실패");
-        } else if (result == -2) {
+        } else if (result == ResultCode.LATE_FEE_LOGS_DELETE_ERROR) {
             System.out.println("❌ 오류가 발생했습니다. 관리자에게 문의하세요.");
         }
     }
