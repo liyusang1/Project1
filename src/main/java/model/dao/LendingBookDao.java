@@ -46,7 +46,7 @@ public class LendingBookDao {
             // 쿼리 실행
             // 책은 최대 3개 까지 대출 가능 ->
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next() && resultSet.getInt("check_lending") < 4) {
+                if (resultSet.next() && resultSet.getInt("check_lending") < 3) {
                     available = true;
                 }
             }

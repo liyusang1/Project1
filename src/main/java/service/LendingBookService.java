@@ -63,7 +63,7 @@ public class LendingBookService {
 
         //현재 대출 중인지 체크
         if (!lendingBookDao.checkUserLendingExist(userId)) {
-            System.out.println("⚠️ 해당 유저는 현재 대출 중 입니다. 책은 최대 4권까지 대출할 수 있습니다.");
+            System.out.println("⚠️ 해당 유저는 현재 대출 중 입니다. 책은 최대 3권까지 대출할 수 있습니다.");
             return ResultCode.IS_FAIL;
         }
 
