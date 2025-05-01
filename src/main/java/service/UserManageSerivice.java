@@ -1,5 +1,6 @@
 package service;
 
+import constants.ResultCode;
 import model.dao.CheckMangerDao;
 import model.dao.CheckUserExistDao;
 import model.dao.UserManageDao;
@@ -19,37 +20,38 @@ public class UserManageSerivice {
     }
 
     // 모든 유저 조회 - 관리자 여부 처리
-    public List<UserDto> getAllUsers(int option, Long managerId) {
+    public List<UserDto> getAllUsers(int option, Long userId) {
 
         // 관리자 유저인지 체크
-        if (!checkMangerDao.checkManager(managerId)) {
+        if (!checkMangerDao.checkManager(userId)) {
             return null;
         }
         return userManageDao.getAllUsers(option);
     }
 
-    // 모든 유저 조회 - 관리자 여부 처리
-    public List<UserDto> getUserById(Long userId, Long managerId) {
+    // id로 유저 조회 - 관리자 여부 처리
+    public List<UserDto> getUserById(Long targetId, Long userId) {
 
         // 관리자 유저인지 체크
-        if (!checkMangerDao.checkManager(managerId)) {
+        if (!checkMangerDao.checkManager(userId)) {
             return null;
         }
-        return userManageDao.getUserById(userId);
+
+        return userManageDao.getUserById(targetId);
     }
 
     //회원 삭제 - 존재하는 Id여부 처리, 관리자 여부 처리
-    public int deleteUser(Long userId, Long managerId) {
+    public int deleteUser(Long inputId) {
 
         //유저 유효성 검사
-        if (!checkUserExistDao.checkUserExist(userId)) {
+        if (!checkUserExistDao.checkUserExist(inputId)) {
             return -1;
         }
 
-        if (!checkMangerDao.checkManager(managerId)) {
-            return 0;
-        }
-        return userManageDao.deleteUser(userId);
+//        if (!checkMangerDao.checkManager(managerId)) {
+//            return 0;
+//        }
+        return userManageDao.deleteUser(inputId);
     }
 
     // 회원 수정

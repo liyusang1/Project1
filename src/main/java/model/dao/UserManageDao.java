@@ -50,13 +50,13 @@ public class UserManageDao {
     /**
      * Select문이면서 parameter존재할 때 Connection 및 Statement이후 ResultSet은 별도로 처리
      */
-    public List<UserDto> getUserById(Long userId) {
+    public List<UserDto> getUserById(Long targetId) {
         String sql = UserManageSql.SELECT_USER_BY_ID;
         List<UserDto> users = new ArrayList<>();
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, userId);
+            pstmt.setLong(1, targetId);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
