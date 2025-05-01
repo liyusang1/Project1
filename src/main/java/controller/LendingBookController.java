@@ -105,12 +105,12 @@ public class LendingBookController {
             System.out.println("========================================");
             System.out.println("📚           대출 및 반납 기능           ");
             System.out.println("----------------------------------------");
-            System.out.println("📖  1 : 대출");
-            System.out.println("📕  2 : 반납");
-            System.out.println("📘  3 : 대출 목록 조회");
-            System.out.println("📕  4 : 연체액 조회");
-            System.out.println("📘  5 : 연체액 납부 (관리자만 가능)");
-            System.out.println("📙  exit : 종료");
+            System.out.println("🟢  1 : 📖 도서 대출");
+            System.out.println("🔴  2 : 📕 도서 반납");
+            System.out.println("📋  3 : 📚 대출 목록 조회");
+            System.out.println("💰  4 : ⏰ 연체액 조회");
+            System.out.println("🛠️  5 : 💳 연체액 납부 (관리자만 가능)");
+            System.out.println("🚪  exit : 종료");
             System.out.println("----------------------------------------");
             System.out.println("⌨️  명령어를 입력해 주세요.");
             System.out.println("========================================");
@@ -120,24 +120,25 @@ public class LendingBookController {
                 System.out.println("⚠️ 대출 및 반납 기능을 종료 합니다.");
                 break;
             } else if (input.equals("1")) {
-                System.out.println("\uD83D\uDCD9 대여 하실 책 번호를 입력해 주세요. : ");
+                System.out.println("📖 대여 하실 책 번호를 입력해 주세요. : ");
                 Long bookId = scanner.nextLong();
                 scanner.nextLine(); // 버퍼에 남은 줄바꿈 제거
 
                 insertLending(bookId, userId, LocalDateTime.now().plusDays(7));
             } else if (input.equals("2")) {
-                System.out.println("\uD83D\uDCD5 반납처리 하실 대여 번호를 입력해 주세요. : ");
+                System.out.println("📕 반납처리 하실 대여 번호를 입력해 주세요. : ");
                 Long lendingId = scanner.nextLong();
                 scanner.nextLine(); // 버퍼에 남은 줄바꿈 제거
 
                 returnBook(lendingId, userId);
             } else if (input.equals("3")) {
-                System.out.println("\uD83D\uDCD8 대출 목록을 출력합니다.");
+                System.out.println("📚 대출 목록을 출력합니다.");
                 getAllLending(userId);
             } else if (input.equals("4")) {
+                System.out.println("⏰ 연체액을 조회 합니다.");
                 getAllLateFee(userId);
             } else if (input.equals("5")) {
-                System.out.println("\uD83D\uDCD5 연체액을 납부할 유저의 userId를 입력해 주세요 : ");
+                System.out.println("💳 연체액을 납부할 유저의 userId를 입력해 주세요 : ");
                 Long targetId = scanner.nextLong();
                 scanner.nextLine(); // 버퍼에 남은 줄바꿈 제거
 
