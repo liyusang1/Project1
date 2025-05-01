@@ -1,6 +1,7 @@
 package service;
 
 import model.dao.CheckMangerDao;
+import model.dao.CheckUserExistDao;
 import model.dao.UserManageDao;
 import model.dto.UserDto;
 
@@ -9,20 +10,22 @@ import java.util.List;
 public class UserManageSerivice {
     private final UserManageDao userManageDao;
     private final CheckMangerDao checkMangerDao;
+    private final CheckUserExistDao checkUserExistDao;
 
     public UserManageSerivice() {
+        this.checkUserExistDao = new CheckUserExistDao();
         this.userManageDao = new UserManageDao();
         this.checkMangerDao = new CheckMangerDao();
     }
 
     // 모든 유저 조회 - 관리자 여부 처리
-    public List<UserDto> getAllUsers(Long managerId) {
+    public List<UserDto> getAllUsers(int option, Long managerId) {
 
         // 관리자 유저인지 체크
         if (!checkMangerDao.checkManager(managerId)) {
             return null;
         }
-        return userManageDao.getAllUsers();
+        return userManageDao.getAllUsers(option);
     }
 
     // 모든 유저 조회 - 관리자 여부 처리
@@ -35,13 +38,16 @@ public class UserManageSerivice {
         return userManageDao.getUserById(userId);
     }
 
-
     //회원 삭제 - 존재하는 Id여부 처리, 관리자 여부 처리
     public int deleteUser(Long userId, Long managerId) {
 
-        // 관리자 유저인지 체크
+        //유저 유효성 검사
+        if (!checkUserExistDao.checkUserExist(userId)) {
+            return -1;
+        }
+
         if (!checkMangerDao.checkManager(managerId)) {
-            throw new NullPointerException();
+            return 0;
         }
         return userManageDao.deleteUser(userId);
     }

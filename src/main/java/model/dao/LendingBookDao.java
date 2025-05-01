@@ -1,6 +1,7 @@
 package model.dao;
 
 import constants.LendingStatus;
+import constants.ResultCode;
 import model.dto.LendingBookDto;
 import model.sql.LendingBookSql;
 import util.DBUtil;
@@ -28,7 +29,7 @@ public class LendingBookDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            return ResultCode.IS_ERROR;
         }
     }
 
@@ -45,7 +46,7 @@ public class LendingBookDao {
             // 쿼리 실행
             // 책은 최대 3개 까지 대출 가능 ->
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next() && resultSet.getInt("check_lending") < 4) {
+                if (resultSet.next() && resultSet.getInt("check_lending") < 3) {
                     available = true;
                 }
             }
@@ -96,7 +97,7 @@ public class LendingBookDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            return ResultCode.IS_ERROR;
         }
     }
 
@@ -141,6 +142,7 @@ public class LendingBookDao {
                 lendingBookDto.setTitle(resultSet.getString("title"));
                 lendingBookDto.setAuthor(resultSet.getString("author"));
                 lendingBookDto.setPublisher(resultSet.getString("publisher"));
+                lendingBookDto.setDueDate(resultSet.getTimestamp("due_date").toLocalDateTime());
                 lendingBookDtos.add(lendingBookDto);
             }
 
@@ -164,7 +166,7 @@ public class LendingBookDao {
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            return ResultCode.IS_ERROR;
         }
     }
 
@@ -201,7 +203,7 @@ public class LendingBookDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1;
+        return ResultCode.IS_ERROR;
     }
 
     public int applyPenalty(Long lendingId, int penaltyRequired) {
@@ -217,7 +219,7 @@ public class LendingBookDao {
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1;
+            return ResultCode.IS_ERROR;
         }
     }
 
@@ -237,7 +239,7 @@ public class LendingBookDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1;
+        return ResultCode.IS_ERROR;
     }
 
     public int deleteAllLateFeeLogs(Long userId) {
@@ -253,7 +255,7 @@ public class LendingBookDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return -2;
+            return ResultCode.LATE_FEE_LOGS_DELETE_ERROR;
         }
     }
 
@@ -264,11 +266,8 @@ public class LendingBookDao {
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            // 먼저 파라미터 설정
             preparedStatement.setLong(1, userId);
 
-            // 쿼리 실행
-            // 책은 최대 3개 까지 대출 가능 ->
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next() && resultSet.getInt("fee") >= 1) {
                     available = true;
