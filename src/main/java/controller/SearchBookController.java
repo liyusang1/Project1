@@ -1,7 +1,9 @@
 package controller;
 
+import common.BookListFormatter;
 import model.dto.BookShowDto;
 import service.SearchBookService;
+import util.PaginationUtil;
 
 import java.util.List;
 import java.util.Scanner;
@@ -16,31 +18,7 @@ public class SearchBookController {
     // 도서 전체 목록 조회
     public void getAllBooks(boolean status) {
         List<BookShowDto> bookList = searchBookService.getAllBooks(status);
-
-        // 컬럼명 출력
-        String format = "| %-8s | %-15s | %-15s | %-12s | %-6s |\n";
-        String line = "+----------+----------------------+-----------------+-----------------+--------------+";
-        System.out.println(line);
-        System.out.printf(format, "도서명", "저자", "출판사", "카테고리", "대출상태");
-        System.out.println(line);
-
-        bookList.forEach(b -> {
-            String statusText;
-            switch (b.getStatus()) {
-                case 1 -> statusText = "대출가능";
-                case 0 -> statusText = "대출중";
-                default -> statusText = "알 수 없음";
-            }
-
-            System.out.printf(format,
-                    truncate(b.getTitle(), 20),
-                    truncate(b.getAuthor(), 15),
-                    truncate(b.getPublisher(), 15),
-                    b.getCategory(),
-                    statusText
-            );
-        });
-        System.out.println(line);
+        PaginationUtil.displayPagedList(bookList, 5, new BookListFormatter());
     }
 
     // 도서 검색(제목)
@@ -51,30 +29,7 @@ public class SearchBookController {
         String title = sc.next();
 
         List<BookShowDto> bookList = searchBookService.findBooksByTitle(title, status);
-        // 컬럼명 출력
-        String format = "| %-8s | %-15s | %-15s | %-12s | %-6s |\n";
-        String line = "+----------+----------------------+-----------------+-----------------+--------------+";
-        System.out.println(line);
-        System.out.printf(format,  "도서명", "저자", "출판사", "카테고리", "대출상태");
-        System.out.println(line);
-
-        bookList.forEach(b -> {
-            String statusText;
-            switch (b.getStatus()) {
-                case 1 -> statusText = "대출가능";
-                case 0 -> statusText = "대출중";
-                default -> statusText = "알 수 없음";
-            }
-
-            System.out.printf(format,
-                    truncate(b.getTitle(), 20),
-                    truncate(b.getAuthor(), 15),
-                    truncate(b.getPublisher(), 15),
-                    b.getCategory(),
-                    statusText
-            );
-        });
-        System.out.println(line);
+        PaginationUtil.displayPagedList(bookList, 5, new BookListFormatter());
     }
 
     // 도서 검색(작가)
@@ -85,30 +40,7 @@ public class SearchBookController {
         String author = sc.next();
 
         List<BookShowDto> bookList = searchBookService.findBooksByAuthor(author, status);
-        // 컬럼명 출력
-        String format = "| %-8s | %-15s | %-15s | %-12s | %-6s |\n";
-        String line = "+----------+----------------------+-----------------+-----------------+--------------+";
-        System.out.println(line);
-        System.out.printf(format,  "도서명", "저자", "출판사", "카테고리", "대출상태");
-        System.out.println(line);
-
-        bookList.forEach(b -> {
-            String statusText;
-            switch (b.getStatus()) {
-                case 1 -> statusText = "대출가능";
-                case 0 -> statusText = "대출중";
-                default -> statusText = "알 수 없음";
-            }
-
-            System.out.printf(format,
-                    truncate(b.getTitle(), 20),
-                    truncate(b.getAuthor(), 15),
-                    truncate(b.getPublisher(), 15),
-                    b.getCategory(),
-                    statusText
-            );
-        });
-        System.out.println(line);
+        PaginationUtil.displayPagedList(bookList, 5, new BookListFormatter());
     }
 
     // 도서 검색(카테고리)
@@ -119,38 +51,10 @@ public class SearchBookController {
         String category = sc.next();
 
         List<BookShowDto> bookList = searchBookService.findBooksByCategory(category, status);
-        // 컬럼명 출력
-        String format = "| %-8s | %-15s | %-15s | %-12s | %-6s |\n";
-        String line = "+----------+----------------------+-----------------+-----------------+--------------+";
-        System.out.println(line);
-        System.out.printf(format,  "도서명", "저자", "출판사", "카테고리", "대출상태");
-        System.out.println(line);
-
-        bookList.forEach(b -> {
-            String statusText;
-            switch (b.getStatus()) {
-                case 1 -> statusText = "대출가능";
-                case 0 -> statusText = "대출중";
-                default -> statusText = "알 수 없음";
-            }
-
-            System.out.printf(format,
-                    truncate(b.getTitle(), 20),
-                    truncate(b.getAuthor(), 15),
-                    truncate(b.getPublisher(), 15),
-                    b.getCategory(),
-                    statusText
-            );
-        });
-        System.out.println(line);
+        PaginationUtil.displayPagedList(bookList, 5, new BookListFormatter());
     }
-    
-    private String truncate(String str, int maxLength) {
-        return str.length() > maxLength ? str.substring(0, maxLength - 1) + "…" : str;
-    }
-    
-    
-    // 도서 목록 검색 시스텝
+
+    // 도서 목록 검색 시스템
     public void searchBookSystem() {
         Scanner scanner = new Scanner(System.in);
         
@@ -209,5 +113,4 @@ public class SearchBookController {
             }
         }
     } // end while
-
 }
