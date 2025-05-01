@@ -14,8 +14,23 @@ import java.util.List;
 
 public class UserManageDao {
     // 모든 유저 목록 조회
-    public List<UserDto> getAllUsers() {
-        String sql = UserManageSql.SELECT_ALL_USER;
+    public List<UserDto> getAllUsers(int option) {
+        String sql = "";
+        switch (option) {
+            case 1 -> {
+                sql = UserManageSql.SELECT_ALL_USER;
+            }
+            case 2 -> {
+                sql = UserManageSql.SELECT_ALL_MANAGER;
+            }
+            case 3 -> {
+                sql = UserManageSql.SELECT_ALL_NORMAL_USER;
+            }
+            case 4 -> {
+                sql = UserManageSql.SELECT_ALL_USER_BY_CARETE_DATE;
+            }
+        }
+
         List<UserDto> users = new ArrayList<>();
 
         try (Connection connection = DBUtil.getConnection();
