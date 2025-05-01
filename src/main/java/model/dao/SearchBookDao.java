@@ -23,6 +23,7 @@ public class SearchBookDao {
 
             while (resultSet.next()) {
                 BookShowDto booksDto = new BookShowDto();
+                booksDto.setBookId(resultSet.getLong("book_id"));
                 booksDto.setTitle(resultSet.getString("title"));
                 booksDto.setAuthor(resultSet.getString("author"));
                 booksDto.setPublisher(resultSet.getString("publisher"));
@@ -51,6 +52,7 @@ public class SearchBookDao {
 
             while (resultSet.next()) {
                 BookShowDto booksDto = new BookShowDto();
+                booksDto.setBookId(resultSet.getLong("book_id"));
                 booksDto.setTitle(resultSet.getString("title"));
                 booksDto.setAuthor(resultSet.getString("author"));
                 booksDto.setPublisher(resultSet.getString("publisher"));
@@ -77,6 +79,7 @@ public class SearchBookDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 BookShowDto booksDto = new BookShowDto();
+                booksDto.setBookId(resultSet.getLong("book_id"));
                 booksDto.setTitle(resultSet.getString("title"));
                 booksDto.setAuthor(resultSet.getString("author"));
                 booksDto.setPublisher(resultSet.getString("publisher"));
@@ -102,6 +105,7 @@ public class SearchBookDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 BookShowDto booksDto = new BookShowDto();
+                booksDto.setBookId(resultSet.getLong("book_id"));
                 booksDto.setTitle(resultSet.getString("title"));
                 booksDto.setAuthor(resultSet.getString("author"));
                 booksDto.setPublisher(resultSet.getString("publisher"));
