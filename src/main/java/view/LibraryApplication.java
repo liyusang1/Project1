@@ -23,7 +23,7 @@ public class LibraryApplication {
 
             switch (choice) {
                 case "1" -> handleLogin();
-                case "2" -> userController.userAuthConsoleView();
+                case "2" -> userController.signUpConsoleView();
                 case "3" -> searchController.searchBookSystem();
                 case "4" -> {
                     System.out.println("📕 시스템을 종료합니다.");
@@ -62,7 +62,7 @@ public class LibraryApplication {
     }
 
     private static void showUserMenu(Long userId) {
-        while (true) {
+        while (SessionStorage.isLoggedIn()) {
             System.out.println("\n========= 👤 회원 전용 메뉴 =========");
             System.out.println("1. 🔐 계정 관리");
             System.out.println("2. 📖 대출/반납 시스템");
@@ -86,7 +86,7 @@ public class LibraryApplication {
     }
 
     private static void showAdminMenu(Long adminId) {
-        while (true) {
+        while (SessionStorage.isLoggedIn()) {
             System.out.println("\n========= 👑 관리자 전용 메뉴 =========");
             System.out.println("1. 🔐 계정 관리");
             System.out.println("2. 👥 회원 관리");
