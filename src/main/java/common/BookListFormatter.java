@@ -23,10 +23,10 @@ public class BookListFormatter implements PaginationUtil.Formatter<BookShowDto> 
             default -> "알 수 없음";
         };
         System.out.printf(format,
-                b.getBookId(),  // ID 출력
-                truncate(b.getTitle(), 22),
-                truncate(b.getAuthor(), 16),
-                truncate(b.getPublisher(), 18),
+                b.getBookId(),
+                truncate(b.getTitle().trim(), 22),      // 도서명 고정 너비 처리
+                truncate(b.getAuthor().trim(), 16),
+                truncate(b.getPublisher().trim(), 18),
                 b.getCategory(),
                 statusText
         );
@@ -38,6 +38,7 @@ public class BookListFormatter implements PaginationUtil.Formatter<BookShowDto> 
     }
 
     private String truncate(String text, int maxLength) {
+        if (text == null) return "";
         return text.length() <= maxLength ? text : text.substring(0, maxLength - 1) + "…";
     }
 }
