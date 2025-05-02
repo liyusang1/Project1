@@ -69,94 +69,67 @@ public class UserController {
     // 회원 기능 뷰
     public void userAuthConsoleView() {
         Scanner scanner = new Scanner(System.in);
+        UserDto user = SessionStorage.getCurrentUser();
 
-        if (!SessionStorage.isLoggedIn()) {
-            // 로그인 안 된 사용자 전용 메뉴
-            while (true) {
-                System.out.println("\n========================================");
-                System.out.println("🔐  회원 기능 메뉴 (비회원)");
-                System.out.println("----------------------------------------");
-                System.out.println("1. 회원가입");
-                System.out.println("2. 로그인");
-                System.out.println("exit. 종료");
-                System.out.println("========================================");
-                System.out.print("메뉴를 선택하세요: ");
-                String input = scanner.nextLine();
+        if (user == null) {
+            System.out.println("⚠️ 로그인 후 이용 가능한 메뉴입니다.");
+            return;
+        }
 
-                if (input.equalsIgnoreCase("exit")) {
-                    System.out.println("👋 회원 기능을 종료합니다.");
-                    break;
-                } else if (input.equals("1")) {
-                    System.out.println("📝 이름: ");
-                    String name = scanner.nextLine();
+        boolean isAdmin = user.getMembershipType() == 1;
 
-                    System.out.println("📧 이메일: ");
+        while (true) {
+            System.out.println("\n========= 🔐 계정 관리 메뉴 (" + (isAdmin ? "관리자" : "회원") + ") =========");
+            System.out.println("1. 비밀번호 변경");
+            System.out.println("2. 로그아웃");
+            System.out.println("exit. 종료");
+            System.out.print("▶ 메뉴 선택: ");
+            String input = scanner.nextLine();
+
+            switch (input) {
+                case "1" -> {
+                    System.out.print("📧 이메일: ");
                     String email = scanner.nextLine();
-
-                    System.out.println("📱 전화번호: ");
+                    System.out.print("📱 전화번호: ");
                     String phone = scanner.nextLine();
-
-                    int type = 0; // 자동으로 일반유저 설정
-
-                    System.out.println("🔒 비밀번호: ");
-                    String pw = scanner.nextLine();
-
-                    UserSignUpDto signUpDto = new UserSignUpDto(name, email, phone, type, pw);
-                    signUp(signUpDto);
-
-                } else if (input.equals("2")) {
-                    System.out.println("📧 이메일: ");
-                    String email = scanner.nextLine();
-
-                    System.out.println("🔒 비밀번호: ");
-                    String pw = scanner.nextLine();
-
-                    UserLoginDto loginDto = new UserLoginDto(email, pw);
-                    login(loginDto);
-                    if (SessionStorage.isLoggedIn()) break; // 로그인 성공 시 종료
-                } else {
-                    System.out.println("⚠️ 잘못된 입력입니다. 다시 시도해주세요.");
-                }
-            }
-        } else {
-            // 로그인된 사용자 전용 메뉴
-            while (true) {
-                System.out.println("\n========================================");
-                System.out.println("🔐  계정 관리 메뉴 (회원)");
-                System.out.println("----------------------------------------");
-                System.out.println("1. 비밀번호 변경");
-                System.out.println("2. 로그아웃");
-                System.out.println("exit. 종료");
-                System.out.println("========================================");
-                System.out.print("메뉴를 선택하세요: ");
-                String input = scanner.nextLine();
-
-                if (input.equalsIgnoreCase("exit")) {
-                    System.out.println("👋 계정 관리 메뉴를 종료합니다.");
-                    break;
-                } else if (input.equals("1")) {
-                    System.out.println("📧 이메일을 입력하세요:");
-                    String email = scanner.nextLine();
-
-                    System.out.println("📱 등록된 전화번호를 입력하세요:");
-                    String phone = scanner.nextLine();
-
-                    System.out.println("🔐 새 비밀번호를 입력하세요:");
+                    System.out.print("🔐 새 비밀번호: ");
                     String newPw = scanner.nextLine();
-
-                    PasswordUpdateDto updateDto = new PasswordUpdateDto(email, phone, newPw);
-                    resetPassword(updateDto);
-                } else if (input.equals("2")) {
-                    logout();
-                    break;
-                } else {
-                    System.out.println("⚠️ 잘못된 입력입니다. 다시 시도해주세요.");
+                    resetPassword(new PasswordUpdateDto(email, phone, newPw));
                 }
+                case "2" -> {
+                    logout();
+                    return;
+                }
+                case "exit" -> {
+                    System.out.println("👋 계정 관리 메뉴를 종료합니다.");
+                    return;
+                }
+                default -> System.out.println("⚠️ 올바른 메뉴 번호를 입력해주세요.");
             }
         }
     }
 
+    // 회원가입용 입력 메서드
+    public void signUpConsoleView() {
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.print("📝 이름: ");
+        String name = scanner.nextLine();
+
+        System.out.print("📧 이메일: ");
+        String email = scanner.nextLine();
+
+        System.out.print("📱 전화번호: ");
+        String phone = scanner.nextLine();
+
+        System.out.print("🔒 비밀번호: ");
+        String pw = scanner.nextLine();
+
+        int type = 0; // 일반 회원
+
+        UserSignUpDto signUpDto = new UserSignUpDto(name, email, phone, type, pw);
+        signUp(signUpDto);
+    }
 
 
 
