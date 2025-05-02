@@ -8,7 +8,7 @@ public class UserTableHelper {
 
     public static void displayUsers(List<UserDto>  userList) {
         // 컬럼 폭: ID, 이름, 이메일, 전화번호, 타입, 가입일, 수정일
-        int[] colWidths = {4, 8, 16, 16, 11, 15, 15};
+        int[] colWidths = {6, 8, 16, 16, 11, 15, 15};
         String[] headers = {"ID", "이름", "이메일", "전화번호", "타입", "가입일", "수정일"};
 
         // 라인 생성
