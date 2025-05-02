@@ -45,40 +45,55 @@ public class UserManageSerivice {
 
         //유저 유효성 검사
         if (!checkUserExistDao.checkUserExist(inputId)) {
-            return -1;
+            return ResultCode.DELETE_USER_NOT_EXIST;
         }
 
-//        if (!checkMangerDao.checkManager(managerId)) {
-//            return 0;
-//        }
         return userManageDao.deleteUser(inputId);
     }
 
     // 회원 수정
     public int updateUser(String name, String email, String phone_number, Long userId) {
 
-        if (!name.matches("^.{0,255}$")) {
-            System.out.print("[이름이 너무 깁니다]");
-            return 0;
-        } else if (name.trim().isEmpty()) {
-            System.out.print("[이름의 입력값이 없습니다]");
-            return 0;
+        // 이름: 2~30자, 한글/영문/공백만 허용
+        if (!name.matches("^[a-zA-Z가-힣\\s]{2,30}$")) {
+            if (name.trim().isEmpty()) {
+                System.out.print("[이름의 입력값이 없습니다]");
+            } else if (name.length() > 30) {
+                System.out.print("[이름이 너무 깁니다]");
+            } else if (name.length() < 2) {
+                System.out.print("[이름이 너무 짧습니다]");
+            } else {
+                System.out.print("[이름 형식이 올바르지 않습니다]");
+            }
+            return ResultCode.IS_FAIL;
         }
 
-        if (!email.matches("^.{0,255}$")) {
-            System.out.print("[이메일이 너무 깁니다]");
-            return 0;
-        } else if (email.trim().isEmpty()) {
-            System.out.print("[이메일 입력값이 없습니다]");
-            return 0;
+// 이메일: 5~100자, 이메일 형식
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$") || email.length() < 5 || email.length() > 100) {
+            if (email.trim().isEmpty()) {
+                System.out.print("[이메일 입력값이 없습니다]");
+            } else if (email.length() > 100) {
+                System.out.print("[이메일이 너무 깁니다]");
+            } else if (email.length() < 5) {
+                System.out.print("[이메일이 너무 짧습니다]");
+            } else {
+                System.out.print("[이메일 형식이 올바르지 않습니다]");
+            }
+            return ResultCode.IS_FAIL;
         }
 
-        if (!phone_number.matches("^.{0,255}$")) {
-            System.out.print("[전화번호가 너무 깁니다]");
-            return 0;
-        } else if (phone_number.trim().isEmpty()) {
-            System.out.print("[전화번호 입력값이 없습니다]");
-            return 0;
+// 전화번호: 9~20자, 숫자/하이픈/공백만 허용
+        if (!phone_number.matches("^[0-9\\-\\s]{9,20}$")) {
+            if (phone_number.trim().isEmpty()) {
+                System.out.print("[전화번호 입력값이 없습니다]");
+            } else if (phone_number.length() > 20) {
+                System.out.print("[전화번호가 너무 깁니다]");
+            } else if (phone_number.length() < 9) {
+                System.out.print("[전화번호가 너무 짧습니다]");
+            } else {
+                System.out.print("[전화번호 형식이 올바르지 않습니다]");
+            }
+            return ResultCode.IS_FAIL;
         }
         return userManageDao.updateUser(name, email, phone_number, userId);
     }

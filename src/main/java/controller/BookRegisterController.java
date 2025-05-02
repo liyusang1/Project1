@@ -1,6 +1,7 @@
 package controller;
 
 import constants.BookUserConstant;
+import constants.ResultCode;
 import model.dto.BookDto;
 import model.dto.CategoryDto;
 import model.dto.SelectBookDto;
@@ -24,11 +25,11 @@ public class BookRegisterController {
     public void resigterBook(BookDto bookDto, Long userId) {
         int result = bookRegisterService.registerBook(bookDto, userId);
 
-        if (result == 1) {
+        if (result == ResultCode.IS_SUCCESS) {
             System.out.println("🎉 책이 성공적으로 등록되었습니다!");
-        } else if (result == 0) {
+        } else if (result == ResultCode.IS_FAIL) {
             System.out.println("⚠️ 책 등록에 실패했습니다. 다시 시도해보세요.");
-        } else if (result == -1) {
+        } else if (result == ResultCode.IS_ERROR) {
             System.out.println("❌ 오류가 발생했습니다. 관리자에게 문의하세요.");
         }
     }

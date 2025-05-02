@@ -1,5 +1,6 @@
 package controller;
 
+import constants.ResultCode;
 import model.dto.UserDto;
 import service.UserManageSerivice;
 
@@ -51,11 +52,11 @@ public class UserManageController {
 
     public void updateUser(String name, String email, String phone_number, Long inputId) {
         int result = userManageSerivice.updateUser(name, email, phone_number, inputId);
-        if (result == 1) {
+        if (result == ResultCode.IS_SUCCESS) {
             System.out.println("✅ 회원정보가 성공적으로 수정 되었습니다!");
-        } else if (result == 0) {
+        } else if (result == ResultCode.IS_FAIL) {
             System.out.println("⚠️ 회원정보 수정에 실패했습니다. 다시 시도해보세요.");
-        } else if (result == -1) {
+        } else if (result == ResultCode.IS_ERROR) {
             System.out.println("❌ 오류가 발생했습니다. 관리자에게 문의하세요.");
         }
     }
@@ -64,11 +65,11 @@ public class UserManageController {
     public void deleteUser(Long inputId) {
 
         int result = userManageSerivice.deleteUser(inputId);
-        if (result == 1) {
+        if (result == ResultCode.DELETE_USER_EXIST) {
             System.out.println("\uD83D\uDDD1\uFE0F" + inputId + "번 유저 삭제성공");
-        } else if (result == 0) {
+        } else if (result == ResultCode.DELETE_USER_NOT_MANAGER) {
             System.out.println("❌관리자만 접근 가능합니다.");
-        } else if (result == -1) {
+        } else if (result == ResultCode.DELETE_USER_NOT_EXIST) {
             System.out.println("⚠️ 존재하지 않는 유저 입니다.");
         }
     }
