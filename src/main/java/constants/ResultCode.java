@@ -10,4 +10,8 @@ public class ResultCode {
     public static final int LATE_FEE_LOGS_DELETE_ERROR = -2;
 
     public static final int GET_LATE_FEE_LOGS_FAIL = -1;
+
+    public static final int DELETE_USER_EXIST = 1;
+    public static final int DELETE_USER_NOT_EXIST = -1;
+    public static final int DELETE_USER_NOT_MANAGER = 0;
 }
