@@ -1,11 +1,8 @@
 package controller;
 
 import common.SessionStorage;
-import model.dto.BookDto;
 
 import model.dto.RequestsDto;
-import model.dto.SampleGiftDto;
-import model.dto.UserDto;
 import service.RequestBookService;
 
 import java.util.List;
@@ -31,10 +28,8 @@ public class RequestBookController {
         System.out.print("신청할 도서 출판사를 입력해주세요. ");
         String publisher = sc.nextLine();
 
-
         requestBookService.requestBook(userId, title, author, publisher);
     }
-
 
     // 희망도서 신청 조회(회원)
     public void getMyRequestedBooks() {
@@ -65,9 +60,7 @@ public class RequestBookController {
                     statusText
             );
         });
-
         System.out.println(line);
-
     }
 
     // 희망도서 신청 조회(관리자)
@@ -89,7 +82,6 @@ public class RequestBookController {
                 case 0 -> statusText = "반려";
                 default -> statusText = "알 수 없음";
             }
-
             System.out.printf(format,
                     req.getRequestId(),
                     req.getUserId(),
@@ -100,7 +92,6 @@ public class RequestBookController {
                     statusText
             );
         });
-
         System.out.println(line);
     }
 
@@ -121,7 +112,7 @@ public class RequestBookController {
         requestBookService.updateRequestedBookStatus(reqId, status);
     }
 
-    // 희망도서 시스텝 - 회원
+    // 희망도서 시스템 - 회원
     public void requestBookSystem() {
         Scanner scanner = new Scanner(System.in);
 
@@ -152,7 +143,7 @@ public class RequestBookController {
         }
     }
 
-    // 희망도서 시스텝 - 관리자
+    // 희망도서 시스템 - 관리자
     public void requestBookProcessSystem() {
         Scanner scanner = new Scanner(System.in);
 
@@ -182,5 +173,4 @@ public class RequestBookController {
             }
         }
     }
-
 }

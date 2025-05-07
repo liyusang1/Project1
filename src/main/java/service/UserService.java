@@ -8,9 +8,12 @@ import model.dto.UserSignUpDto;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserService {
     private final UserDao userDao = new UserDao();
+    private final Map<String, Integer> loginFailCountMap = new HashMap<>();
 
     // 회원가입 처리
     public boolean signUp(UserSignUpDto dto) {
@@ -36,7 +39,7 @@ public class UserService {
     }
 
     // 이메일 형식 검사 메서드
-    private boolean isValidEmail(String email) {
+    public boolean isValidEmail(String email) {
         return email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
@@ -69,9 +72,45 @@ public class UserService {
 
     // 로그인 처리
     public boolean login(UserLoginDto dto) {
+        String email = dto.getEmail();
+
+        // 🔒 1. 이메일 형식 유효성 검사
+        if (!isValidEmail(email)) {
+            System.out.println("⚠️ 유효하지 않은 이메일 형식입니다.");
+            return false; // 실패 카운트는 증가시키지 않음
+        }
+
+        // 🔐 2. 로그인 차단 여부 검사
+        if (loginFailCountMap.getOrDefault(email, 0) >= 5) {
+            System.out.println("⛔ 비밀번호를 5회 이상 틀리셨습니다. 로그인 제한됩니다.");
+            return false;
+        }
+
+        // 🔐 3. 비밀번호 암호화
         String hashedPassword = hashPassword(dto.getPassword());
-        dto.setPassword(hashedPassword); // 암호화된 비밀번호로 덮어쓰기
-        return userDao.loginUser(dto);
+        dto.setPassword(hashedPassword);
+
+        // 🔐 4. 로그인 시도
+        boolean success = userDao.loginUser(dto);
+
+        if (success) {
+            loginFailCountMap.remove(email); // 성공 시 기록 제거
+        } else {
+            int failCount = loginFailCountMap.getOrDefault(email, 0) + 1;
+            loginFailCountMap.put(email, failCount);
+
+            System.out.println("❌ 로그인 실패 (" + failCount + "회)");
+
+            if (failCount == 5) {
+                System.out.println("⛔ 5회 이상 틀리셨습니다. 다음부터 입력이 제한됩니다.");
+            }
+        }
+
+        return success;
+    }
+
+    public boolean isLoginBlocked(String email) {
+        return loginFailCountMap.getOrDefault(email, 0) >= 5;
     }
 
     // 비밀번호 변경

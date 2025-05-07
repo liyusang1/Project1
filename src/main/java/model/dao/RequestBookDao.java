@@ -34,6 +34,28 @@ public class RequestBookDao {
         return 0;
     }
 
+    // 같은 책 신청 여부 확인
+    public int existRequstBook(String requestBook, Long userId) {
+        String sql = RequestBookSql.EXIST_BOOK_REQ;
+
+        try(Connection connection = DBUtil.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, requestBook);
+            preparedStatement.setLong(2, userId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        }  catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
     // 희망도서 신청
     public int requestBook(RequestsDto requestsDto) {  // 희망 도서 신청(회원)
         String sql = RequestBookSql.INSERT;

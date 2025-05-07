@@ -14,10 +14,16 @@ public class RequestBookService {
 
     // 희망도서 신청
     public int requestBook(Long userId, String title, String author, String publisher) {
-        int count = requestBookDao.confirmBook(title);
+        int existsInBooks = requestBookDao.confirmBook(title);
+        int existsInRequests = requestBookDao.existRequstBook(title, userId);
 
-        if (count > 0) {
-            System.out.println("❗ 이미 존재하는 도서입니다. 신청이 불가능합니다.");
+        if (existsInBooks > 0) {
+            System.out.println("❗ 이미 보유 중인 도서입니다. 신청할 수 없습니다.");
+            return 0;
+        }
+
+        if (existsInRequests > 0) {
+            System.out.println("❗ 이미 신청된 도서입니다. 신청할 수 없습니다.");
             return 0;
         }
 
@@ -39,7 +45,7 @@ public class RequestBookService {
             System.out.println("신청 실패, 다시 신청해주세요.");
         }
 
-        return requestBookDao.requestBook(dto);
+        return result;
     }
 
     // 희망도서 신청 조회(회원)
