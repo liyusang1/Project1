@@ -41,7 +41,10 @@ public class UserController {
             System.out.println("🎉 로그인 성공! " + user.getName() + "님 환영합니다.");
 
         } else {
-            System.out.println("❌ 로그인 실패: 이메일 또는 비밀번호를 확인하세요.");
+            // 이메일 형식도 유효하고, 로그인 차단도 아니면 일반 실패 메시지 출력
+            if (userService.isValidEmail(dto.getEmail()) && !userService.isLoginBlocked(dto.getEmail())) {
+                System.out.println("❌ 이메일 또는 비밀번호를 확인하세요.");
+            }
         }
     }
 
